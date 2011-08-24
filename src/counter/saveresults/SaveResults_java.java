@@ -13,7 +13,7 @@ public class SaveResults_java extends SaveResults{
 
 
 	@Override
-	public String getDiffTotalStatistics() {
+	public String getDiffTotalStatisticsInfo() {
 		
         StringBuilder total = new StringBuilder();
         total.append("Class: " + numClass);
@@ -35,28 +35,32 @@ public class SaveResults_java extends SaveResults{
     }
 
 	@Override
-    public String getDiffFileStatistics(
+    public String getDiffFileStatisticsInfo(
             FileStatistics fileStatistics) {
 
 		FileStatistics_java fs = (FileStatistics_java) fileStatistics;
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("Class: " + fs.numClass);
-        numClass += fs.numClass;
         sBuilder.append("\n");
         sBuilder.append("Constructor: " + fs.numConstructor);
-        numConstructor += fs.numConstructor;
         sBuilder.append("\n");
         sBuilder.append("Try: " + fs.numTry);
-        numTry += fs.numTry;
         sBuilder.append("\n");
         sBuilder.append("Catch: " + fs.numCatch);
-        numCatch += fs.numCatch;
         sBuilder.append("\n");
         sBuilder.append("Throw: " + fs.numThrow);
-        numThrow += fs.numThrow;
         sBuilder.append("\n");
         sBuilder.append("\n");
         return sBuilder.toString();
     }
+	
+	public void getDiffTotalStatistics(FileStatistics fileStatistics){
+		FileStatistics_java fs = (FileStatistics_java) fileStatistics;
+        numClass += fs.numClass;
+        numConstructor += fs.numConstructor;
+        numTry += fs.numTry;
+        numCatch += fs.numCatch;
+        numThrow += fs.numThrow;
+	}
 
 }

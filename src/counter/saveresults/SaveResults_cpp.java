@@ -14,7 +14,7 @@ public class SaveResults_cpp extends SaveResults{
     public int numThrow = 0;
 
     @Override
-	public String getDiffTotalStatistics() {
+	public String getDiffTotalStatisticsInfo() {
         StringBuilder total = new StringBuilder();
         total.append("Class: " + numClass);
         total.append("\n");
@@ -45,43 +45,46 @@ public class SaveResults_cpp extends SaveResults{
     }
 
     @Override
-    public String getDiffFileStatistics(
+    public String getDiffFileStatisticsInfo(
             FileStatistics fileStatistics) {
 
         FileStatistics_cpp fs = (FileStatistics_cpp) fileStatistics;
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("Class: " + fs.numClass);
-        numClass += fs.numClass;
         sBuilder.append("\n");
         sBuilder.append("Struct: " + fs.numStruct);
-        numStruct += fs.numStruct;
         sBuilder.append("\n");
         sBuilder.append("Constructor declaration: " + fs.numConstructordecl);
-        numConstructordecl += fs.numConstructordecl;
         sBuilder.append("\n");
         sBuilder.append("Destructor declaration: " + fs.numDestructordecl);
-        numDestructordecl += fs.numDestructordecl;
         sBuilder.append("\n");
         sBuilder.append("Constructor: " + fs.numConstructor);
-        numConstructor += fs.numConstructor;
         sBuilder.append("\n");
         sBuilder.append("Destructor: " + fs.numDestructor);
-        numDestructor += fs.numDestructor;
         sBuilder.append("\n");
         sBuilder.append("Union: " + fs.numUnion);
-        numUnion += fs.numUnion;
         sBuilder.append("\n");
         sBuilder.append("Try: " + fs.numTry);
-        numTry += fs.numTry;
         sBuilder.append("\n");
         sBuilder.append("Catch: " + fs.numCatch);
-        numCatch += fs.numCatch;
         sBuilder.append("\n");
         sBuilder.append("Throw: " + fs.numThrow);
-        numThrow += fs.numThrow;
         sBuilder.append("\n");
         sBuilder.append("\n");
         return sBuilder.toString();
     }
-
+    
+    public void getDiffTotalStatistics(FileStatistics fileStatistics){
+    	FileStatistics_cpp fs = (FileStatistics_cpp) fileStatistics;
+        numClass += fs.numClass;
+        numStruct += fs.numStruct;
+        numConstructordecl += fs.numConstructordecl;
+        numDestructordecl += fs.numDestructordecl;
+        numConstructor += fs.numConstructor;
+        numDestructor += fs.numDestructor;
+        numUnion += fs.numUnion;
+        numTry += fs.numTry;
+        numCatch += fs.numCatch;
+        numThrow += fs.numThrow;
+    }
 }

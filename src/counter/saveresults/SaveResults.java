@@ -48,7 +48,7 @@ public abstract class SaveResults {
 	public void writeResult(String fileName,
 			List<FileStatistics> fileList, List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
-			Boolean saveFunction, Boolean saveOperator) {
+			Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
 		FileStatistics fileStatistics;
 		String fileInfo;
 		try{
@@ -58,20 +58,28 @@ public abstract class SaveResults {
 			FileWriter fw = new FileWriter(outFileName + ".txt");
 			BufferedWriter writer = new BufferedWriter(fw);
 			StringBuilder fileBuilder = new StringBuilder();
-			StringBuilder totalBuilder = new StringBuilder();
 			Iterator<FileStatistics> it = fileList.iterator();
-			while(it.hasNext()){
-				numFile++;
-				fileStatistics = it.next();
-				fileInfo = getFileStatistics(fileStatistics);
-				fileBuilder.append(fileInfo);
-				fileBuilder.append("\n");
+			if(savefilestat){
+				while(it.hasNext()){
+					numFile++;
+					fileStatistics = it.next();
+					getTotalStatistics(fileStatistics);
+					fileInfo = getFileStatisticsInfo(fileStatistics);
+					fileBuilder.append(fileInfo);
+					fileBuilder.append("\n");
+				}
+			}
+			else{
+				while(it.hasNext()){
+					numFile++;
+					fileStatistics = it.next();
+					getTotalStatistics(fileStatistics);
+				}
 			}
 			getLocalMethodCallNumber(functionList, functionCallList, classList);
 			numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
-			String totalInfo = getTotalStatistics();
-			totalBuilder.append(totalInfo);
-			writer.write(totalBuilder.toString());
+			String totalInfo = getTotalStatisticsInfo();
+			writer.write(totalInfo);
 			writer.write(fileBuilder.toString());
 			writer.close();
 			if(saveFunction){
@@ -194,13 +202,13 @@ public abstract class SaveResults {
 		}
 	}
 
-	public String getFileStatistics(FileStatistics fileStatistics){
-		String samepart = getSameFileStatistics(fileStatistics);
-		String diffpart = getDiffFileStatistics(fileStatistics);
+	public String getFileStatisticsInfo(FileStatistics fileStatistics){
+		String samepart = getSameFileStatisticsInfo(fileStatistics);
+		String diffpart = getDiffFileStatisticsInfo(fileStatistics);
 		return samepart+diffpart;
 	}
 
-	private String getSameFileStatistics(FileStatistics fileStatistics) {
+	private String getSameFileStatisticsInfo(FileStatistics fileStatistics) {
 		FileStatistics fs = fileStatistics;
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append("*****  File Statistics  *****");
@@ -210,103 +218,112 @@ public abstract class SaveResults {
 		sBuilder.append("\n");
 		sBuilder.append("\n");
 		sBuilder.append("Total line: " + fs.numTotalLine);
-		numTotalLine += fs.numTotalLine;
 		sBuilder.append("\n");
 		sBuilder.append("Comment line: " + fs.numCommentLine);
-		numCommentLine += fs.numCommentLine;
 		sBuilder.append("\n");
 		sBuilder.append("Blank line: " + fs.numBlankLine);
-		numBlankLine += fs.numBlankLine;
 		sBuilder.append("\n");
 		sBuilder.append("Function declaration: " + fs.numFunctionDecl);
-		numFunctionDecl += fs.numFunctionDecl;
 		sBuilder.append("\n");
 		sBuilder.append("Function: " + fs.numFunction);
-		numFunction += fs.numFunction;
 		sBuilder.append("\n");
 		sBuilder.append("Declaration statement: " + fs.numDeclstmt);
-		numDeclstmt += fs.numDeclstmt;
 		sBuilder.append("\n");
 		sBuilder.append("Declaration:" + fs.numDecl);
-		numDecl += fs.numDecl;
 		sBuilder.append("\n");
 		sBuilder.append("Blocks: " + fs.numBlock);
-		numBlock += fs.numBlock;
 		sBuilder.append("\n");
 		sBuilder.append("Expressions: " + fs.numExpr);
-		numExpr += fs.numExpr;
 		sBuilder.append("\n");
 		sBuilder.append("Expression statements: " + fs.numExprstmt);
-		numExprstmt += fs.numExprstmt;
 		sBuilder.append("\n");
 		sBuilder.append("Call: " + fs.numCall);
-		numCall += fs.numCall;
 		sBuilder.append("\n");
 		sBuilder.append("Continue: " + fs.numContinue);
-		numContinue += fs.numContinue;
 		sBuilder.append("\n");
 		sBuilder.append("Break: " + fs.numBreak);
-		numBreak += fs.numBreak;
 		sBuilder.append("\n");
 		sBuilder.append("Return: " +fs.numReturn);
-		numReturn += fs.numReturn;
 		sBuilder.append("\n");
 		sBuilder.append("For: " + fs.numFor);
-		numFor += fs.numFor;
 		sBuilder.append("\n");
 		sBuilder.append("If: " + fs.numIf);
-		numIf += fs.numIf;
 		sBuilder.append("\n");
 		sBuilder.append("Else: " + fs.numElse);
-		numElse += fs.numElse;
 		sBuilder.append("\n");
 		sBuilder.append("While: " + fs.numWhile);
-		numWhile += fs.numWhile;
 		sBuilder.append("\n");
 		sBuilder.append("Do: " + fs.numDo);
-		numDo += fs.numDo;
 		sBuilder.append("\n");
 		sBuilder.append("Switch: " + fs.numSwitch);
-		numSwitch += fs.numSwitch;
 		sBuilder.append("\n");
 		sBuilder.append("Case: " + fs.numCase);
-		numCase += fs.numCase;
 		sBuilder.append("\n");
 		sBuilder.append("Parameter list: " + fs.numParamList);
-		numParamList += fs.numParamList;
 		sBuilder.append("\n");
 		sBuilder.append("Param: " + fs.numParam);
-		numParam += fs.numParam;
 		sBuilder.append("\n");
 		sBuilder.append("Argument list: " + fs.numArguList);
-		numArguList += fs.numArguList;
 		sBuilder.append("\n");
 		sBuilder.append("Argument: " + fs.numArgu);
-		numArgument += fs.numArgu;
 		sBuilder.append("\n");
 		sBuilder.append("Assignment: " + fs.numAssignment);
-		numAssignment += fs.numAssignment;
 		sBuilder.append("\n");
 		sBuilder.append("Zero operator assignment: " + fs.numZeroOpAssign);
-		numZeroOpAssign += fs.numZeroOpAssign;
 		sBuilder.append("\n");
 		sBuilder.append("Zero operator call assignment: " + fs.numZeroOpCallAssign);
-		numZeroOpCallAssign += fs.numZeroOpCallAssign;
 		sBuilder.append("\n");
 		sBuilder.append("Const assignment: " + fs.numConstAssign);
-		numConstAssign += fs.numConstAssign;
 		sBuilder.append("\n");
 		return sBuilder.toString();
 
 	}
 
-	public String getTotalStatistics(){
-		String samepart = getSameTotalStatistics();
-		String diffpart = getDiffTotalStatistics();
+	public void getTotalStatistics(FileStatistics fs){
+		getSameTotalStatistics(fs);
+		getDiffTotalStatistics(fs);
+
+	}
+
+	public void getSameTotalStatistics(FileStatistics fs){
+		numTotalLine += fs.numTotalLine;
+		numCommentLine += fs.numCommentLine;
+		numBlankLine += fs.numBlankLine;
+		numFunctionDecl += fs.numFunctionDecl;
+		numFunction += fs.numFunction;
+		numDeclstmt += fs.numDeclstmt;
+		numDecl += fs.numDecl;
+		numBlock += fs.numBlock;
+		numExpr += fs.numExpr;
+		numExprstmt += fs.numExprstmt;
+		numCall += fs.numCall;
+		numContinue += fs.numContinue;
+		numBreak += fs.numBreak;
+		numReturn += fs.numReturn;
+		numFor += fs.numFor;
+		numIf += fs.numIf;
+		numElse += fs.numElse;
+		numWhile += fs.numWhile;
+		numDo += fs.numDo;
+		numSwitch += fs.numSwitch;
+		numCase += fs.numCase;
+		numParamList += fs.numParamList;
+		numParam += fs.numParam;
+		numArguList += fs.numArguList;
+		numArgument += fs.numArgu;
+		numAssignment += fs.numAssignment;
+		numZeroOpAssign += fs.numZeroOpAssign;
+		numZeroOpCallAssign += fs.numZeroOpCallAssign;
+		numConstAssign += fs.numConstAssign;
+	}
+
+	public String getTotalStatisticsInfo(){
+		String samepart = getSameTotalStatisticsInfo();
+		String diffpart = getDiffTotalStatisticsInfo();
 		return samepart+diffpart;
 	}
 
-	private String getSameTotalStatistics() {
+	private String getSameTotalStatisticsInfo() {
 		StringBuilder total = new StringBuilder();
 		total.append("\n");
 		total.append("*** Total Statistics Information ***");
@@ -379,7 +396,8 @@ public abstract class SaveResults {
 		return total.toString();
 	}
 
-	public abstract String getDiffTotalStatistics();
-	public abstract String getDiffFileStatistics(FileStatistics fileStatistics);
+	public abstract String getDiffTotalStatisticsInfo();
+	public abstract String getDiffFileStatisticsInfo(FileStatistics fileStatistics);
+	public abstract void getDiffTotalStatistics(FileStatistics fs);
 
 }

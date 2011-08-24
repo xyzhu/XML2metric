@@ -21,13 +21,16 @@ public class CodeCounter implements ContentHandler {
 	public String language;
 	public Boolean saveFunction;
 	public Boolean saveOperator;
+	public Boolean savefilestat;
 
 
-	public CodeCounter(String f, String l, Boolean a, Boolean o){
+	public CodeCounter(String f, String l, Boolean a, 
+			Boolean o, Boolean s){
 		fileName = f;
 		language = l;
 		saveFunction = a;
 		saveOperator = o;
+		savefilestat = s;
 		
 	}
 
@@ -253,7 +256,7 @@ public class CodeCounter implements ContentHandler {
 		sr.writeResult(fileName, countStat.getFileList(),
 				countStat.getFunctionList(), 
 				countStat.getFunctionCallList(),countStat.getClassList(),
-				saveFunction, saveOperator);
+				saveFunction, saveOperator, savefilestat);
 
 
 	}
@@ -284,6 +287,7 @@ public class CodeCounter implements ContentHandler {
 		CmdLineParser.Option language_opt = cmdparser.addStringOption('l', "language");
 		CmdLineParser.Option call_opt = cmdparser.addBooleanOption('a', "call");
 		CmdLineParser.Option operator_opt = cmdparser.addBooleanOption('o', "operator");
+		CmdLineParser.Option filestat_opt = cmdparser.addBooleanOption('s', "filestat");
 		try {
 			cmdparser.parse(args);
 		} catch (CmdLineParser.OptionException e) {
@@ -296,6 +300,7 @@ public class CodeCounter implements ContentHandler {
 		String language = (String) cmdparser.getOptionValue(language_opt, null);
 		Boolean savecall = (Boolean) cmdparser.getOptionValue(call_opt, false);
 		Boolean saveoperator = (Boolean) cmdparser.getOptionValue(operator_opt, false);
+		Boolean savefilestat = (Boolean) cmdparser.getOptionValue(filestat_opt, false);
 		/*
 		 * start parsing the xml file
 		 */
@@ -316,7 +321,8 @@ public class CodeCounter implements ContentHandler {
 			System.out.println("Usage: java DocumentStatistics URL1 URL2...");
 		}
 		CodeCounter codeCounter = 
-			new CodeCounter(fileName, language, savecall, saveoperator);
+			new CodeCounter(fileName, language, savecall, 
+					saveoperator, savefilestat);
 		// Install the Content Handler
 		parser.setContentHandler(codeCounter);
 
