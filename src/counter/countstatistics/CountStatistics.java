@@ -158,6 +158,7 @@ public class CountStatistics {
 			functionList.add(charbucket.trim());
 			seekingFunctionname = false;
 			collectChars = false;
+			charbucket = null;
 		}
 	}
 
@@ -167,6 +168,7 @@ public class CountStatistics {
 			functionCallList.add(charbucket.trim());
 			seekingFunctioncallname = false;
 			collectChars = false;
+			charbucket = null;
 		}
 		inargulist = true;
 	}
@@ -184,6 +186,7 @@ public class CountStatistics {
 			charbucket = null;
 		}
 		seekMacroname();
+		seekAssignname();
 		seekClassname();
 		if(isassign){
 			isConstAssign = false;
@@ -293,12 +296,10 @@ public class CountStatistics {
 					setMacroConstAssign();
 				}
 			}
-
 			isassign = false;
 			isCallAssign = false;
 			numOperator = 0;
 			numassign = 0;
-			seekAssignname(false);
 		}
 		indecl = false;
 	}
@@ -311,7 +312,6 @@ public class CountStatistics {
 	public void endName(){
 		addClassname();
 		addMacroname();
-
 		checkMacroAssign();
 	}
 	public void endExpr() {
@@ -327,15 +327,19 @@ public class CountStatistics {
 			if(isCallAssign==true&&numOperator==0){
 				currentFile.numZeroOpCallAssign += numassign;
 			}
-			if(isConstAssign&&numOperator==0){
-				currentFile.numConstAssign += numassign;
+			if(numOperator==0){
+				if(isConstAssign){
+					currentFile.numConstAssign += numassign;
+				}
+				else{
+					//check if this is a macro assignment
+					setMacroConstAssign();
+				}
 			}
-			addMacroAssign();
 			isassign = false;
 			isCallAssign = false;
 			numOperator = 0;
 			numassign = 0;
-			seekAssignname(false);
 		}
 		inexpr = false;
 	}
@@ -389,7 +393,7 @@ public class CountStatistics {
 	 */
 	public void getNumAssignment(char[] text, int start, int length) {
 		String str = new String(text, start, length);
-		//				System.out.println(str);
+//						System.out.println(str);
 		if(str.contains("=")&&!str.contains("!=")
 				&&!str.contains("==")){
 			if(prestr==null){
@@ -412,14 +416,13 @@ public class CountStatistics {
 	 * @param str
 	 */
 	private void setAssignment(String str) {
-		if(!includeInString(str)){
+		if(!includeInString(str)){System.out.println(str);
 			if(indecl==true||inexpr==true){
 				increaseAssignment();
 				isassign = true;
 				numassign++;
 				isConstAssign = true;
 				containOnlyWhiteSpace = true;
-				seekAssignname(true);
 			}
 		}
 	}
@@ -533,7 +536,7 @@ public class CountStatistics {
 	public void clearMacroList(){};
 	public void seekMacroname(){};
 	public void setMacroConstAssign(){};
-	public void seekAssignname(boolean b){};
+	public void seekAssignname(){};
 	public void addMacroname(){};
 	public void checkMacroAssign(){};
 	public void addMacroAssign(){};

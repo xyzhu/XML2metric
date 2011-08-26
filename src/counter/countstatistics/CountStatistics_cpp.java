@@ -8,7 +8,7 @@ import counter.filestatistics.FileStatistics_cpp;
 public class CountStatistics_cpp extends CountStatistics{
 
 
-	String functionName;
+//	String functionName;
 	public Boolean seekingClassname = false;
 	public List<String> classList;
 	public List<String> macroList;
@@ -31,7 +31,6 @@ public class CountStatistics_cpp extends CountStatistics{
 	 * and contains only the macro, it is an const assignment.
 	 */
 	public boolean containMacroAssign = false;
-	public boolean containOnlyMacroAssign = true;
 	public boolean containMacroDefinition = false;
 
 	public CountStatistics_cpp(Boolean saveop){
@@ -91,6 +90,11 @@ public class CountStatistics_cpp extends CountStatistics{
 	public void startUnion(){
 		currentFile.increaseNumUnion();
 	}
+	/*as long as there is a macro definition, we will
+	 * start seeking the name of the macro, and set
+	 * the containMacroDefinition to true.
+	 */
+	
 	public void startCppdefine(){
 		seekingMacroname = true;
 		containMacroDefinition = true;
@@ -121,51 +125,77 @@ public class CountStatistics_cpp extends CountStatistics{
 	}
 
 	public void seekMacroname(){
-		if(seekingMacroname||seekingAssignname) {
+		if(seekingMacroname) {
+			collectChars = true;
+			charbucket = null;
+		}
+	}
+	
+//	public void seekAssignname(){
+//		if(seekingAssignname){
+//			collectChars = true;
+//			charbucket = null;
+//		}
+//	}
+
+	public void setMacroConstAssign(){
+		if(containMacroDefinition&&containMacroAssign){
+			currentFile.numConstAssign += numassign;
+		}
+	}
+//	public void keepSeekingAssignname(boolean b){
+//		seekingAssignname = b;
+//	}
+
+	public void seekAssignname(){
+		if(isassign&&containMacroDefinition){
+			seekingAssignname = true;
+			containMacroAssign = false;
 			collectChars = true;
 			charbucket = null;
 		}
 	}
 
-	public void setMacroConstAssign(){
-		if(containMacroDefinition&&containMacroAssign&&containOnlyMacroAssign){
-			currentFile.numConstAssign += numassign;
-		}
-	}
-	public void seekAssignname(boolean b){
-		seekingAssignname = b;
-	}
-
-	public void startSeekAssignname(){
-		if(containMacroDefinition){
-			seekingAssignname = true;
-			containMacroAssign = false;
-			containOnlyMacroAssign = true;
-		}
-	}
-
+	/*
+	 * If seekingMacroname is true, the name got
+	 * is a macor name, we add it to macroList,
+	 * and stop seeking macro name.
+	 */
 	public void addMacroname(){
 		if(seekingMacroname){
 			macroList.add(charbucket.trim());
 			seekingMacroname = false;
 			collectChars = false;
+			charbucket = null;
 		}
 	}
+	/*
+	 *if seeking assignment name is true, the name got is 
+	 *the right part of an assignment, we check if it is
+	 *a macro, if it is, this is an assignment with macro.
+	 *
+	 */
 	public void checkMacroAssign(){
 		if(seekingAssignname){
-			if(charbucket!=null&&!macroList.contains(charbucket.trim())){
-				containOnlyMacroAssign = false;
-				seekingAssignname = false;
-			}
-			if(!incall&&macroList.contains(charbucket.trim())){
+			if(!incall&&charbucket!=null&&macroList.contains(charbucket.trim())){
 				containMacroAssign = true;
 			}
+			/*
+			 * if this assign name is a macro, then if
+			 * this is zero operator, this assignment is 
+			 * zero operator const assign. Other wise,
+			 * this assignment contains other name, it can 
+			 * not be a zero operator const assign
+			 * so here, we set seekingAssignname to false because
+			 * no matter this name is macro or not, we do not
+			 * have to check other name in this assignment
+			 */
+			seekingAssignname = false;
 		}
 	}
 
 	public void addMacroAssign(){
-		if(containMacroDefinition&&!isConstAssign
-				&&containMacroAssign&&containOnlyMacroAssign&&numOperator==0){
+		if(containMacroDefinition&&containMacroAssign){
 			currentFile.numConstAssign += numassign;
 		}
 	}
