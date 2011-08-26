@@ -416,7 +416,7 @@ public class CountStatistics {
 	 * @param str
 	 */
 	private void setAssignment(String str) {
-		if(!includeInString(str)){System.out.println(str);
+		if(!includeInString(str)){
 			if(indecl==true||inexpr==true){
 				increaseAssignment();
 				isassign = true;
