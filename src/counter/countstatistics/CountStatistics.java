@@ -46,6 +46,7 @@ public class CountStatistics {
 	 * a assignment contains a function call
 	 */
 	public boolean isCallAssign;
+	public boolean inparamlist;
 	/*
 	 * "->"is a pointer and '-' should not be taken
 	 * as a minus operator in an assignment
@@ -115,6 +116,9 @@ public class CountStatistics {
 	public void startDecl() {
 		indecl = true;
 		currentFile.numDecl++;
+		if(inparamlist){
+			currentFile.numParamDecl++;
+		}
 
 	}
 
@@ -160,11 +164,12 @@ public class CountStatistics {
 			collectChars = false;
 			charbucket = null;
 		}
+		inparamlist = true;
 	}
 
 	public void startArgumentList() {
 		currentFile.numArguList++;
-		if(seekingFunctioncallname){
+		if(seekingFunctioncallname&&charbucket!=null){
 			functionCallList.add(charbucket.trim());
 			seekingFunctioncallname = false;
 			collectChars = false;
@@ -346,6 +351,10 @@ public class CountStatistics {
 
 	public void endArguList(){
 		inargulist = false;
+	}
+	
+	public void endParamList(){
+		inparamlist = false;
 	}
 
 	public void endCall(){

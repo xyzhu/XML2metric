@@ -218,6 +218,9 @@ public class CodeCounter implements ContentHandler {
 		case callEle:
 			countStat.endCall();
 			break;
+		case parameter_listEle:
+			countStat.endParamList();
+			break;
 		default:
 			break;
 		}
@@ -225,7 +228,7 @@ public class CodeCounter implements ContentHandler {
 
 	public void characters(char[] text, int start, int length)
 	throws SAXException {
-		//		System.out.println(new String(text, start, length));
+//				System.out.println(new String(text, start, length));
 		countStat.characterHandle(text, start, length);
 	}
 

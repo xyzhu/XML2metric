@@ -53,6 +53,8 @@ public class FileStatistics {
 	public int numZeroOpCallAssign;
 	public int numConstAssign;
 	
+	public int numParamDecl;
+	
 	public FileStatistics(){
 		numOperatorList = new LinkedList<Integer>();
 	}

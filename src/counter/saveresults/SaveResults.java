@@ -43,6 +43,7 @@ public abstract class SaveResults {
 	public int numZeroOpAssign = 0;
 	public int numZeroOpCallAssign = 0;
 	public int numConstAssign = 0;
+	public int numParamDecl = 0;
 
 
 	public void writeResult(String fileName,
@@ -275,6 +276,8 @@ public abstract class SaveResults {
 		sBuilder.append("\n");
 		sBuilder.append("Const assignment: " + fs.numConstAssign);
 		sBuilder.append("\n");
+		sBuilder.append("Parameter declaration: " + fs.numParamDecl);
+		sBuilder.append("\n");
 		return sBuilder.toString();
 
 	}
@@ -315,6 +318,7 @@ public abstract class SaveResults {
 		numZeroOpAssign += fs.numZeroOpAssign;
 		numZeroOpCallAssign += fs.numZeroOpCallAssign;
 		numConstAssign += fs.numConstAssign;
+		numParamDecl += fs.numParamDecl;
 	}
 
 	public String getTotalStatisticsInfo(){
@@ -392,6 +396,8 @@ public abstract class SaveResults {
 		total.append("Zero operator call assignment: " + numZeroOpCallAssign);
 		total.append("\n");
 		total.append("Const assignment: " + numConstAssign);
+		total.append("\n");
+		total.append("Parameter declaration: " + numParamDecl);
 		total.append("\n");
 		return total.toString();
 	}
