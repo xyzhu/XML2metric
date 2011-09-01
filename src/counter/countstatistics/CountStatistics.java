@@ -9,7 +9,7 @@ import counter.filestatistics.FileStatistics;
 
 public class CountStatistics {
 
-	public String filename;
+//	public String filename;
 	FileStatistics currentFile;
 	/*seekingFunctionname is used to tell if
 	 * a function name is going to be collected,
