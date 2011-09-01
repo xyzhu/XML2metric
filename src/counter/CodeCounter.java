@@ -218,8 +218,14 @@ public class CodeCounter implements ContentHandler {
 		case callEle:
 			countStat.endCall();
 			break;
-		case parameter_listEle:
-			countStat.endParamList();
+		case forEle:
+			countStat.endFor();
+			break;
+		case paramEle:
+			countStat.endParam();
+			break;
+		case decl_stmtEle:
+			countStat.endDeclStmt();
 			break;
 		default:
 			break;

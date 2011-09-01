@@ -44,6 +44,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		currentFile = new FileStatistics_cpp();
 		currentFile.setFileName(fileName);
 		unitlevel++;
+//		filename = fileName;
 	}
 
 	public void startStruct(){

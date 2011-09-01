@@ -9,6 +9,7 @@ import counter.filestatistics.FileStatistics;
 
 public class CountStatistics {
 
+//	public String filename;
 	FileStatistics currentFile;
 	/*seekingFunctionname is used to tell if
 	 * a function name is going to be collected,
@@ -46,7 +47,9 @@ public class CountStatistics {
 	 * a assignment contains a function call
 	 */
 	public boolean isCallAssign;
-	public boolean inparamlist;
+	public boolean inparam;
+	public boolean infor;
+	public boolean indeclstmt;
 	/*
 	 * "->"is a pointer and '-' should not be taken
 	 * as a minus operator in an assignment
@@ -103,6 +106,9 @@ public class CountStatistics {
 
 	public void startBlock() {
 		currentFile.numBlock++;
+		if(infor){
+			infor = false;
+		}
 	}
 
 	public void startFunctiondecl() {
@@ -111,15 +117,21 @@ public class CountStatistics {
 
 	public void startDeclstmt() {
 		currentFile.numDeclstmt++;
+		indeclstmt = true;
 	}
 
 	public void startDecl() {
 		indecl = true;
 		currentFile.numDecl++;
-		if(inparamlist){
+		if(infor){
+			currentFile.numDeclInFor++;
+		}
+		else if(inparam){
 			currentFile.numParamDecl++;
 		}
-
+		else if(indeclstmt){
+			currentFile.numDeclInStmt++;
+		}
 	}
 
 	public void startFunction() {
@@ -164,7 +176,6 @@ public class CountStatistics {
 			collectChars = false;
 			charbucket = null;
 		}
-		inparamlist = true;
 	}
 
 	public void startArgumentList() {
@@ -238,6 +249,7 @@ public class CountStatistics {
 
 	public void startFor() {
 		currentFile.numFor++;
+		infor = true;
 	}
 
 	public void startIf() {
@@ -266,6 +278,7 @@ public class CountStatistics {
 
 	public void startParam() {
 		currentFile.numParam++;
+		inparam = true;
 	}
 
 	public void startArgument() {
@@ -353,12 +366,22 @@ public class CountStatistics {
 		inargulist = false;
 	}
 	
-	public void endParamList(){
-		inparamlist = false;
+	public void endParam(){
+		inparam= false;
 	}
 
 	public void endCall(){
 		incall = false;
+	}
+	
+	public void endFor(){
+		if(infor){
+			infor = false;
+		}
+	}
+	
+	public void endDeclStmt(){
+		indeclstmt = false;
 	}
 
 	public List<String> getFunctionList() {

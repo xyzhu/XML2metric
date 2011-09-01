@@ -44,6 +44,8 @@ public abstract class SaveResults {
 	public int numZeroOpCallAssign = 0;
 	public int numConstAssign = 0;
 	public int numParamDecl = 0;
+	public int numDeclInFor = 0;
+	public int numDeclInStmt = 0;
 
 
 	public void writeResult(String fileName,
@@ -278,6 +280,10 @@ public abstract class SaveResults {
 		sBuilder.append("\n");
 		sBuilder.append("Parameter declaration: " + fs.numParamDecl);
 		sBuilder.append("\n");
+		sBuilder.append("Declaration in for: " + fs.numDeclInFor);
+		sBuilder.append("\n");
+		sBuilder.append("Declaration in declaration statement: " + fs.numDeclInStmt);
+		sBuilder.append("\n");
 		return sBuilder.toString();
 
 	}
@@ -319,6 +325,8 @@ public abstract class SaveResults {
 		numZeroOpCallAssign += fs.numZeroOpCallAssign;
 		numConstAssign += fs.numConstAssign;
 		numParamDecl += fs.numParamDecl;
+		numDeclInFor += fs.numDeclInFor;
+		numDeclInStmt += fs.numDeclInStmt;
 	}
 
 	public String getTotalStatisticsInfo(){
@@ -398,6 +406,10 @@ public abstract class SaveResults {
 		total.append("Const assignment: " + numConstAssign);
 		total.append("\n");
 		total.append("Parameter declaration: " + numParamDecl);
+		total.append("\n");
+		total.append("Declaration in for: " + numDeclInFor);
+		total.append("\n");
+		total.append("Declaration in declaration statement: " + numDeclInStmt);
 		total.append("\n");
 		return total.toString();
 	}
