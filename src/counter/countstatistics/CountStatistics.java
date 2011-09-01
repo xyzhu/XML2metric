@@ -9,7 +9,7 @@ import counter.filestatistics.FileStatistics;
 
 public class CountStatistics {
 
-//	public String filename;
+	public String filename;
 	FileStatistics currentFile;
 	/*seekingFunctionname is used to tell if
 	 * a function name is going to be collected,
@@ -50,6 +50,7 @@ public class CountStatistics {
 	public boolean inparam;
 	public boolean infor;
 	public boolean indeclstmt;
+	public boolean inspecifier;
 	/*
 	 * "->"is a pointer and '-' should not be taken
 	 * as a minus operator in an assignment
@@ -316,7 +317,15 @@ public class CountStatistics {
 			}
 			if(indeclstmt&&isassign){
 				currentFile.numDeclStmtWithInit++;
+				//we think declaration with more than two assignment
+				//is parsed correctly by srcml. So we increase by 1
+				//for these assignments
+				if(numassign<=2){
 				currentFile.numAssignInDeclStmt += numassign;
+				}
+				else{
+					currentFile.numAssignInDeclStmt++;
+				}
 			}
 			isassign = false;
 			isCallAssign = false;
