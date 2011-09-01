@@ -56,6 +56,8 @@ public class FileStatistics {
 	public int numParamDecl;
 	public int numDeclInFor;
 	public int numDeclInStmt;
+	public int numDeclStmtWithInit;
+	public int numAssignInDeclStmt;
 	
 	public FileStatistics(){
 		numOperatorList = new LinkedList<Integer>();

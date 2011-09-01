@@ -46,6 +46,8 @@ public abstract class SaveResults {
 	public int numParamDecl = 0;
 	public int numDeclInFor = 0;
 	public int numDeclInStmt = 0;
+	public int numDeclStmtWithInit = 0;
+	public int numAssignInDeclStmt = 0;
 
 
 	public void writeResult(String fileName,
@@ -284,6 +286,10 @@ public abstract class SaveResults {
 		sBuilder.append("\n");
 		sBuilder.append("Declaration in declaration statement: " + fs.numDeclInStmt);
 		sBuilder.append("\n");
+		sBuilder.append("Declaration statement with initialization: " + fs.numDeclStmtWithInit);
+		sBuilder.append("\n");
+		sBuilder.append("Assignment in declaration statement" + fs.numAssignInDeclStmt);
+		sBuilder.append("\n");
 		return sBuilder.toString();
 
 	}
@@ -327,6 +333,8 @@ public abstract class SaveResults {
 		numParamDecl += fs.numParamDecl;
 		numDeclInFor += fs.numDeclInFor;
 		numDeclInStmt += fs.numDeclInStmt;
+		numDeclStmtWithInit += fs.numDeclStmtWithInit;
+		numAssignInDeclStmt += fs.numAssignInDeclStmt;
 	}
 
 	public String getTotalStatisticsInfo(){
@@ -410,6 +418,10 @@ public abstract class SaveResults {
 		total.append("Declaration in for: " + numDeclInFor);
 		total.append("\n");
 		total.append("Declaration in declaration statement: " + numDeclInStmt);
+		total.append("\n");
+		total.append("Declaration statement with initialization: " + numDeclStmtWithInit);
+		total.append("\n");
+		total.append("Assignment in declaration statement: " + numAssignInDeclStmt);
 		total.append("\n");
 		return total.toString();
 	}

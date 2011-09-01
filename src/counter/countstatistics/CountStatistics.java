@@ -314,6 +314,10 @@ public class CountStatistics {
 					setMacroConstAssign();
 				}
 			}
+			if(indeclstmt&&isassign){
+				currentFile.numDeclStmtWithInit++;
+				currentFile.numAssignInDeclStmt += numassign;
+			}
 			isassign = false;
 			isCallAssign = false;
 			numOperator = 0;

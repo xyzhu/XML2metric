@@ -3,6 +3,6 @@ bin/
 .project
 .settings/
 src/test/
-xmlfile/
+testfile/
 junit-4.8.1.jar
 
