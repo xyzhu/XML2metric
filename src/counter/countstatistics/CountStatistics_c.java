@@ -38,6 +38,7 @@ public class CountStatistics_c extends CountStatistics{
 		currentFile = new FileStatistics_c();
 		currentFile.setFileName(fileName);
 		unitlevel++;
+//		filename = fileName;
 	}
 	@Override
 	public void startStruct() {

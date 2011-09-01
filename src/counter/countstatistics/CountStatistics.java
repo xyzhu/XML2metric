@@ -369,7 +369,7 @@ public class CountStatistics {
 	public void endArguList(){
 		inargulist = false;
 	}
-	
+
 	public void endParam(){
 		inparam= false;
 	}
@@ -377,13 +377,13 @@ public class CountStatistics {
 	public void endCall(){
 		incall = false;
 	}
-	
+
 	public void endFor(){
 		if(infor){
 			infor = false;
 		}
 	}
-	
+
 	public void endDeclStmt(){
 		indeclstmt = false;
 	}
@@ -407,7 +407,7 @@ public class CountStatistics {
 
 
 	public void characterHandle(char[] text, int start, int length) {
-//								System.out.println(new String(text, start, length));
+		//								System.out.println(new String(text, start, length));
 		if (collectChars) {
 			String str = new String(text, start, length);
 			if (charbucket == null) {
@@ -419,7 +419,9 @@ public class CountStatistics {
 		}
 		if(unitlevel > 0){
 			getLine(text, start, length);
-			getNumAssignment(text, start, length);
+			if(!incomment){
+				getNumAssignment(text, start, length);
+			}
 		}
 	}
 	/**
@@ -429,7 +431,7 @@ public class CountStatistics {
 	 */
 	public void getNumAssignment(char[] text, int start, int length) {
 		String str = new String(text, start, length);
-//						System.out.println(str);
+		//						System.out.println(str);
 		if(str.contains("=")&&!str.contains("!=")
 				&&!str.contains("==")){
 			if(prestr==null){
