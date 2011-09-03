@@ -8,7 +8,7 @@ import counter.filestatistics.FileStatistics_cpp;
 public class CountStatistics_cpp extends CountStatistics{
 
 
-//	String functionName;
+	//	String functionName;
 	public Boolean seekingClassname = false;
 	public List<String> classList;
 	public List<String> macroList;
@@ -44,7 +44,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		currentFile = new FileStatistics_cpp();
 		currentFile.setFileName(fileName);
 		unitlevel++;
-//		filename = fileName;
+		//		filename = fileName;
 	}
 
 	public void startStruct(){
@@ -95,17 +95,32 @@ public class CountStatistics_cpp extends CountStatistics{
 	 * start seeking the name of the macro, and set
 	 * the containMacroDefinition to true.
 	 */
-	
+
 	public void startCppdefine(){
 		seekingMacroname = true;
 		containMacroDefinition = true;
 	}
 
-	public void seekClassname(){
-		if(seekingClassname){
+	public void startName() {
+		if(seekingFunctionname||seekingFunctioncallname||seekingClassname||seekingMacroname) {
 			collectChars = true;
 			charbucket = null;
 		}
+		if(isassign&&containMacroDefinition){
+			seekingAssignname = true;
+			containMacroAssign = false;
+			collectChars = true;
+			charbucket = null;
+		}
+		if(isassign){
+			isConstAssign = false;
+		}
+	}
+
+	public void endName(){
+		addClassname();
+		addMacroname();
+		checkMacroAssign();
 	}
 
 	public void addClassname(){
@@ -125,35 +140,9 @@ public class CountStatistics_cpp extends CountStatistics{
 		containMacroDefinition = false;
 	}
 
-	public void seekMacroname(){
-		if(seekingMacroname) {
-			collectChars = true;
-			charbucket = null;
-		}
-	}
-	
-//	public void seekAssignname(){
-//		if(seekingAssignname){
-//			collectChars = true;
-//			charbucket = null;
-//		}
-//	}
-
 	public void setMacroConstAssign(){
 		if(containMacroDefinition&&containMacroAssign){
 			currentFile.numConstAssign += numassign;
-		}
-	}
-//	public void keepSeekingAssignname(boolean b){
-//		seekingAssignname = b;
-//	}
-
-	public void seekAssignname(){
-		if(isassign&&containMacroDefinition){
-			seekingAssignname = true;
-			containMacroAssign = false;
-			collectChars = true;
-			charbucket = null;
 		}
 	}
 

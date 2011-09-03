@@ -60,6 +60,23 @@ public class CountStatistics_c extends CountStatistics{
 		containMacroDefinition = true;
 	}
 	
+	public void startName() {
+		if(seekingFunctionname||seekingFunctioncallname) {
+			collectChars = true;
+			charbucket = null;
+		}
+		seekMacroname();
+		seekAssignname();
+		if(isassign){
+			isConstAssign = false;
+		}
+	}
+	
+	public void endName(){
+		addMacroname();
+		checkMacroAssign();
+	}
+	
 	public void clearMacroList(){
 		macroList.clear();
 		containMacroDefinition = false;

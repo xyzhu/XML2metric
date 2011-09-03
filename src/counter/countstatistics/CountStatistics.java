@@ -197,19 +197,6 @@ public class CountStatistics {
 		incomment = true;
 	}
 
-	public void startName() {
-		if(seekingFunctionname||seekingFunctioncallname) {
-			collectChars = true;
-			charbucket = null;
-		}
-		seekMacroname();
-		seekAssignname();
-		seekClassname();
-		if(isassign){
-			isConstAssign = false;
-		}
-	}
-
 
 	public void startCall() {
 		currentFile.numCall++;
@@ -340,11 +327,6 @@ public class CountStatistics {
 		intype = false;
 	}
 
-	public void endName(){
-		addClassname();
-		addMacroname();
-		checkMacroAssign();
-	}
 	public void endExpr() {
 		if(inexpr==true&&isassign==true){
 			//				inexpr = false;
@@ -396,7 +378,7 @@ public class CountStatistics {
 	public void endDeclStmt(){
 		indeclstmt = false;
 	}
-
+	
 	public List<String> getFunctionList() {
 		return functionList;
 	}
@@ -575,17 +557,12 @@ public class CountStatistics {
 	public void startSynchronized(){};
 	public void startUnit(String f){};
 	public void startCppdefine(){};
-	public void seekClassname(){};
-	public void addClassname(){};
+	public void startName(){};
+	public void endName(){};
 	public List<String> getClassList(){
 		return null;
 	}
 	public void clearMacroList(){};
-	public void seekMacroname(){};
 	public void setMacroConstAssign(){};
-	public void seekAssignname(){};
-	public void addMacroname(){};
-	public void checkMacroAssign(){};
-	public void addMacroAssign(){};
 
 }
