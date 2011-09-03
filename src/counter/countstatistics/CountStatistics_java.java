@@ -119,7 +119,8 @@ public class CountStatistics_java extends CountStatistics{
 	}
 	public void addObjname(){
 		if(isobjdecl){
-			classobj.put(typename, charbucket.trim());
+			//we suppose there are not objects having the same name in a project
+			classobj.put(charbucket.trim(), typename);
 		}
 		collectChars = false;
 	}
