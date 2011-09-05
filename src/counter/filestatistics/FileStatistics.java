@@ -79,8 +79,6 @@ public class FileStatistics {
 	public void increaseNumThrow(){};
 	public void increaseNumMacro(){};
 	public void increaseNumUnion(){};
-	public void increaseNumSynchronized(){};
-	public void increaseNumLocalCall(){};
 	public int getNumLabel(){return 0;}
 	public int getNumClass(){return 0;};
 	public int getNumConstructor(){return 0;}

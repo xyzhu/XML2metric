@@ -206,6 +206,7 @@ public class CountStatistics {
 			isCallAssign=true;
 		}
 		incall = true;
+		seekCallername();
 	}
 
 	public void startExprstmt() {
@@ -562,7 +563,12 @@ public class CountStatistics {
 	public List<String> getClassList(){
 		return null;
 	}
+	public List<String> getCallerList(){
+		return null;
+	}
 	public void clearMacroList(){};
 	public void setMacroConstAssign(){};
-
+	public int getNumLocalCall(){return 0;}
+	public void seekCallername(){};
+	
 }

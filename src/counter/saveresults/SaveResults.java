@@ -1,10 +1,8 @@
 package counter.saveresults;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import counter.filestatistics.*;
 
@@ -48,12 +46,13 @@ public abstract class SaveResults {
 	public int numDeclInStmt = 0;
 	public int numDeclStmtWithInit = 0;
 	public int numAssignInDeclStmt = 0;
+	public int numLocalCall2 = 0;
 
 
 	public void writeResult(String fileName,
 			List<FileStatistics> fileList, List<String> functionList,
-			List<String> functionCallList, List<String> classList, 
-			Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
+			List<String> functionCallList, List<String> classList,
+			List<String> callerList, int numLocalCall1, Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
 		FileStatistics fileStatistics;
 		String fileInfo;
 		try{
@@ -81,7 +80,8 @@ public abstract class SaveResults {
 					getTotalStatistics(fileStatistics);
 				}
 			}
-			getLocalMethodCallNumber(functionList, functionCallList, classList);
+			numLocalCall2 = getLocalMethodCallNumber(functionList, functionCallList, classList, callerList);
+			numLocalFunctionCall = numLocalCall1 + numLocalCall2;
 			numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
 			String totalInfo = getTotalStatisticsInfo();
 			writer.write(totalInfo);
@@ -165,46 +165,6 @@ public abstract class SaveResults {
 			opBuilder.append("\n");
 		}
 		return opBuilder.toString();
-	}
-
-
-	private void getLocalMethodCallNumber(List<String> functionList,
-			List<String> functionCallList, List<String> classList) {
-		Set<String> methodSet = new HashSet<String>();
-		Iterator<String> it_method = functionList.iterator();
-		while(it_method.hasNext()){
-			methodSet.add(it_method.next());
-		}
-		int clsize = 0;
-		Set<String> classSet = null;
-		if(classList!=null){
-			clsize = classList.size();
-			classSet = new HashSet<String>();
-		}
-		if(clsize!=0){
-			Iterator<String> it_class = classList.iterator();
-			while(it_class.hasNext()){
-				classSet.add(it_class.next());
-			}
-		}
-		Iterator<String> it_call = functionCallList.iterator();
-		String callname;
-		while(it_call.hasNext()){
-			callname = it_call.next();
-			if (methodSet.contains(callname)){
-				numLocalFunctionCall++;
-			}
-			if(clsize!=0){
-				if(classSet.contains(callname)){
-					numLocalFunctionCall++;
-				}
-				else if(callname.startsWith("~")){
-					if(classSet.contains(callname.substring(1, callname.length()))){
-						numLocalFunctionCall++;
-					}
-				}
-			}
-		}
 	}
 
 	public String getFileStatisticsInfo(FileStatistics fileStatistics){
@@ -429,5 +389,6 @@ public abstract class SaveResults {
 	public abstract String getDiffTotalStatisticsInfo();
 	public abstract String getDiffFileStatisticsInfo(FileStatistics fileStatistics);
 	public abstract void getDiffTotalStatistics(FileStatistics fs);
-
+	public abstract int getLocalMethodCallNumber(List<String> functionList,
+	List<String> functionCallList, List<String> classList, List<String> callerList);
 }

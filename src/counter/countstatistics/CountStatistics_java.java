@@ -19,15 +19,17 @@ public class CountStatistics_java extends CountStatistics{
 	public Set<String> javaVarType;
 	public String typename;
 	public Map<String, String> classobj;
-	public List<String> callername;
+	public List<String> callerList;
 	public boolean inname;
-	public boolean seekingCallname;
+	public boolean seekingCallername;
+	public boolean hasCaller;
+	public int numLocalCall;
 
 	public CountStatistics_java(Boolean saveop){
 		saveOperator = saveop;
 		classList = new LinkedList<String>();
 		classobj = new HashMap<String, String>();
-		callername = new LinkedList<String>();
+		callerList = new LinkedList<String>();
 		javaVarType = new HashSet<String>();
 		javaVarType.add("boolean");
 		javaVarType.add("char");
@@ -50,6 +52,7 @@ public class CountStatistics_java extends CountStatistics{
 		currentFile = new FileStatistics_java();
 		currentFile.setFileName(fileName);
 		unitlevel++;
+		classobj.clear();
 	}
 
 	public void startClass(){
@@ -75,13 +78,14 @@ public class CountStatistics_java extends CountStatistics{
 
 	public void startType() {
 		intype = true;
-		if(indecl){
+		if(indeclstmt){
 			seekingTypename = true;
 		}
 	}
 
 	public void startName() {
-		if(seekingFunctionname||seekingFunctioncallname||seekingClassname||seekingTypename||seekingObjname) {
+		if(seekingFunctionname||seekingFunctioncallname
+				||seekingClassname||seekingTypename||seekingObjname) {
 			collectChars = true;
 			charbucket = null;
 		}
@@ -90,24 +94,37 @@ public class CountStatistics_java extends CountStatistics{
 		}
 		if(incall){
 			if(inname){
-				seekingCallname = true;
+				hasCaller = true;
 			}
 			inname = true;
 		}
 	}
+	
+	public void seekCallername(){
+		seekingCallername = true;
+	}
 
 	public void endName(){
+		String caller;
 		addClassname();
 		addObjname();
-		if(incall){
-			if(!seekingCallname){
-				currentFile.increaseNumLocalCall();
+		if(incall&&seekingCallername){
+			if(!hasCaller){
+				numLocalCall++;
 			}
 			else{
-				callername.add(charbucket.trim());
+				caller = charbucket.trim();
+				if(classobj.get(caller)!=null){
+					callerList.add(classobj.get(caller));
+				}
+				else{
+					callerList.add(caller);
+				}
 			}
+			hasCaller = false;
+			seekingCallername = false;
 		}
-
+		inname = false;
 	}
 
 	public void addClassname(){
@@ -118,22 +135,33 @@ public class CountStatistics_java extends CountStatistics{
 		}
 	}
 	public void addObjname(){
-		if(isobjdecl){
-			//we suppose there are not objects having the same name in a project
+		if(isobjdecl&&seekingObjname&&charbucket!=null){
 			classobj.put(charbucket.trim(), typename);
 		}
 		collectChars = false;
+		seekingObjname = false;
 	}
 
 	public List<String> getClassList(){
 		return classList;
 	}
 
+	public List<String> getCallerList(){
+		return callerList;
+	}
 	public void endType(){
 		intype = false;
-		if(javaVarType.contains(typename)){
-			isobjdecl = true;
-			collectChars = false;
+		if(seekingTypename){
+			typename = charbucket.trim();
+			if(!javaVarType.contains(typename)){
+				isobjdecl = true;
+				collectChars = false;
+				seekingObjname = true;
+			}
+			seekingTypename = false;
 		}
+	}
+	public int getNumLocalCall(){
+		return numLocalCall;
 	}
 }

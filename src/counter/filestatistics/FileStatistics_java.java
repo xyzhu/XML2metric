@@ -10,7 +10,6 @@ public class FileStatistics_java extends FileStatistics{
 	public int numTry;
 	public int numCatch;
 	public int numThrow;
-	public int numLocalCall;
 	
 	public FileStatistics_java(){
 		numTotalLine = 0;
@@ -61,9 +60,6 @@ public class FileStatistics_java extends FileStatistics{
 	}
 	public void increaseNumThrow(){
 		numThrow++;
-	}
-	public void increaseNumLocalCall(){
-		numLocalCall++;
 	}
 	public int getNumClass(){
 		return numClass;

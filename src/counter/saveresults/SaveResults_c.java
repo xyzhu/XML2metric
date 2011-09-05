@@ -1,4 +1,9 @@
 package counter.saveresults;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import counter.filestatistics.*;
 
 public class SaveResults_c extends SaveResults{
@@ -46,5 +51,47 @@ public class SaveResults_c extends SaveResults{
 		numStruct += fs.numStruct;
 		numGoto += fs.numGoto;
 		numLabel += fs.numLabel;
+	}
+
+	public int getLocalMethodCallNumber(List<String> functionList,
+			List<String> functionCallList, List<String> classList, 
+			List<String> callerList) {
+		int numCall = 0;
+		Set<String> methodSet = new HashSet<String>();
+		Iterator<String> it_method = functionList.iterator();
+		while(it_method.hasNext()){
+			methodSet.add(it_method.next());
+		}
+		int clsize = 0;
+		Set<String> classSet = null;
+		if(classList!=null){
+			clsize = classList.size();
+			classSet = new HashSet<String>();
+		}
+		if(clsize!=0){
+			Iterator<String> it_class = classList.iterator();
+			while(it_class.hasNext()){
+				classSet.add(it_class.next());
+			}
+		}
+		Iterator<String> it_call = functionCallList.iterator();
+		String callname;
+		while(it_call.hasNext()){
+			callname = it_call.next();
+			if (methodSet.contains(callname)){
+				numCall++;
+			}
+			if(clsize!=0){
+				if(classSet.contains(callname)){
+					numCall++;
+				}
+				else if(callname.startsWith("~")){
+					if(classSet.contains(callname.substring(1, callname.length()))){
+						numCall++;
+					}
+				}
+			}
+		}
+		return numCall;
 	}
 }
