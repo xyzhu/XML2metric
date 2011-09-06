@@ -151,7 +151,7 @@ public class CountStatistics_java extends CountStatistics{
 	}
 	public void endType(){
 		intype = false;
-		if(seekingTypename){
+		if(seekingTypename&&charbucket!=null){
 			typename = charbucket.trim();
 			if(!javaVarType.contains(typename)){
 				isobjdecl = true;
