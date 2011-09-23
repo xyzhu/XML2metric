@@ -19,9 +19,9 @@ public class CodeCounter implements ContentHandler {
 	private elementName eleName;
 	public CountStatistics countStat;
 	public String language;
-	public Boolean saveFunction;
-	public Boolean saveOperator;
-	public Boolean savefilestat;
+	public Boolean saveFunction;//save the name of function to a list or not
+	public Boolean saveOperator;//save operator of assignment of a list or not
+	public Boolean savefilestat;//save file statistics or save only the total statistics
 
 
 	public CodeCounter(String f, String l, Boolean a, 
