@@ -99,7 +99,7 @@ public class CountStatistics_java extends CountStatistics{
 			inname = true;
 		}
 	}
-	
+
 	public void seekCallername(){
 		seekingCallername = true;
 	}

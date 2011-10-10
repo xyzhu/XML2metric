@@ -62,18 +62,18 @@ public class SaveResults_c extends SaveResults{
 		while(it_method.hasNext()){
 			methodSet.add(it_method.next());
 		}
-		int clsize = 0;
-		Set<String> classSet = null;
-		if(classList!=null){
-			clsize = classList.size();
-			classSet = new HashSet<String>();
-		}
-		if(clsize!=0){
-			Iterator<String> it_class = classList.iterator();
-			while(it_class.hasNext()){
-				classSet.add(it_class.next());
-			}
-		}
+//		int clsize = 0;
+//		Set<String> classSet = null;
+//		if(classList!=null){
+//			clsize = classList.size();
+//			classSet = new HashSet<String>();
+//		}
+//		if(clsize!=0){
+//			Iterator<String> it_class = classList.iterator();
+//			while(it_class.hasNext()){
+//				classSet.add(it_class.next());
+//			}
+//		}
 		Iterator<String> it_call = functionCallList.iterator();
 		String callname;
 		while(it_call.hasNext()){
@@ -81,16 +81,16 @@ public class SaveResults_c extends SaveResults{
 			if (methodSet.contains(callname)){
 				numCall++;
 			}
-			if(clsize!=0){
-				if(classSet.contains(callname)){
-					numCall++;
-				}
-				else if(callname.startsWith("~")){
-					if(classSet.contains(callname.substring(1, callname.length()))){
-						numCall++;
-					}
-				}
-			}
+//			if(clsize!=0){
+//				if(classSet.contains(callname)){
+//					numCall++;
+//				}
+//				else if(callname.startsWith("~")){
+//					if(classSet.contains(callname.substring(1, callname.length()))){
+//						numCall++;
+//					}
+//				}
+//			}
 		}
 		return numCall;
 	}
