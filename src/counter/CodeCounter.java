@@ -252,15 +252,19 @@ public class CodeCounter implements ContentHandler {
 
 	// Now that the document is done, we can print out the final results
 	public void endDocument() throws SAXException {
-		SaveResults sr;
-		if(language.equals("c")){
+		SaveResults sr = null;
+		if(language.equals("C")){
 			sr = new SaveResults_c();
 		}
-		else if(language.equals("c++")){
+		else if(language.equals("C++")){
 			sr = new SaveResults_cpp();
 		}
-		else{
+		else if(language.equals("Java")){
 			sr = new SaveResults_java();
+		}
+		else{
+			System.err.println("Can not parse projects in this language");
+			System.exit(0);
 		}
 		sr.writeResult(fileName, countStat.getFileList(),
 				countStat.getFunctionList(), 
