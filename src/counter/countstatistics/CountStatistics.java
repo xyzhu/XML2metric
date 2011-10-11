@@ -56,8 +56,6 @@ public class CountStatistics {
 	 * as a minus operator in an assignment
 	 */
 	public boolean ispointer = false;
-	//isshift is used to count the number of "<<" and ">>" operators
-	public boolean isshift = false;
 	/*
 	 * isConstAssign is used to tell if the 
 	 * right part of an assignment is const.
@@ -100,7 +98,6 @@ public class CountStatistics {
 		isassign = false;
 		isCallAssign = false;
 		ispointer = false;
-		isshift = false;
 		fileList = new LinkedList<FileStatistics>();
 		seekingFunctionname = false;
 		seekingFunctioncallname = false;
@@ -526,16 +523,6 @@ public class CountStatistics {
 			if(c=='>'&&ispointer ==true){
 				numOp--;
 			}
-			if(c=='>'||c=='<'){
-				if(isshift==true){
-					numOp++;//this is "<<" or ">>" operator
-				}
-				else{
-					isshift = true;
-				}
-			}
-			else
-				isshift = false;
 			if(c=='-'){
 				if(containOnlyWhiteSpace){
 					numOp--;
@@ -551,7 +538,9 @@ public class CountStatistics {
 				containOnlyWhiteSpace = false;
 			}
 			if(str.contains("-=")||str.contains("+=")
-					||str.contains("*=")||str.contains("/=")){
+					||str.contains("*=")||str.contains("/=")||str.contains("|=")
+					||str.contains("&=")||str.contains("^=")||str.contains(">>")
+					||str.contains("<<")){
 				numOp++;
 			}
 		}
