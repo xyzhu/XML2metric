@@ -424,6 +424,9 @@ public class CountStatistics {
 	public void getNumAssignment(char[] text, int start, int length) {
 		String str = new String(text, start, length);
 		//						System.out.println(str);
+		if(str.equals("++")||str.equals("--")){
+			increaseAssignment();
+		}
 		if(str.contains("=")&&!str.contains("!=")
 				&&!str.contains("==")){
 			if(prestr==null){
