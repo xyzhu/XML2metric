@@ -36,15 +36,15 @@ public class CodeCounter implements ContentHandler {
 
 	public void startDocument() throws SAXException {
 		QualifiedName.createCollection();
-		if(language.equals("c")){
+		if(language.equals("C")){
 			//			System.out.println("c");
 			countStat = new CountStatistics_c(saveOperator);
 		}
-		else if(language.equals("c++")){
+		else if(language.equals("C++")){
 			//			System.out.println("c++");
 			countStat = new CountStatistics_cpp(saveOperator);
 		}
-		else{
+		else if(language.equals("Java")){
 			//			System.out.println("java");
 			countStat = new CountStatistics_java(saveOperator);
 		}
