@@ -299,7 +299,7 @@ public class CodeCounter implements ContentHandler {
 		CmdLineParser cmdparser = new CmdLineParser();
 		CmdLineParser.Option file_opt = cmdparser.addStringOption('f', "filename");
 		CmdLineParser.Option language_opt = cmdparser.addStringOption('l', "language");
-		CmdLineParser.Option method_opt = cmdparser.addBooleanOption('m', "method");
+		CmdLineParser.Option function_opt = cmdparser.addBooleanOption('m', "function");
 		CmdLineParser.Option operator_opt = cmdparser.addBooleanOption('o', "operator");
 		CmdLineParser.Option filestat_opt = cmdparser.addBooleanOption('s', "filestat");
 		try {
@@ -312,7 +312,7 @@ public class CodeCounter implements ContentHandler {
 
 		String fileName = (String) cmdparser.getOptionValue(file_opt, null);
 		String language = (String) cmdparser.getOptionValue(language_opt, null);
-		Boolean savemethodname = (Boolean) cmdparser.getOptionValue(method_opt, false);
+		Boolean savefunctionname = (Boolean) cmdparser.getOptionValue(function_opt, false);
 		Boolean saveoperator = (Boolean) cmdparser.getOptionValue(operator_opt, false);
 		Boolean savefilestat = (Boolean) cmdparser.getOptionValue(filestat_opt, false);
 		/*
@@ -335,7 +335,7 @@ public class CodeCounter implements ContentHandler {
 			System.out.println("Usage: java DocumentStatistics URL1 URL2...");
 		}
 		CodeCounter codeCounter = 
-			new CodeCounter(fileName, language, savemethodname, 
+			new CodeCounter(fileName, language, savefunctionname, 
 					saveoperator, savefilestat);
 		// Install the Content Handler
 		parser.setContentHandler(codeCounter);
