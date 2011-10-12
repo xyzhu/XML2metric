@@ -134,7 +134,9 @@ public class SaveResults_cpp extends SaveResults{
 				}
 			}
 			if(callname.startsWith("get")||callname.startsWith("set")
-					||callname.startsWith("_get")||callname.startsWith("_set")){
+					||callname.startsWith("_get")||callname.startsWith("_set")
+					||callname.startsWith("Get")||callname.startsWith("Set")
+					||callname.startsWith("_Get")||callname.startsWith("_Set")){
 				if(isLocal){
 					numLocalGetterSetterCall++;
 				}

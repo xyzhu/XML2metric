@@ -72,7 +72,9 @@ public class SaveResults_c extends SaveResults{
 				isLocal = true;
 			}
 			if(callname.startsWith("get")||callname.startsWith("set")
-					||callname.startsWith("_get")||callname.startsWith("_set")){
+					||callname.startsWith("_get")||callname.startsWith("_set")
+					||callname.startsWith("Get")||callname.startsWith("Set")
+					||callname.startsWith("_Get")||callname.startsWith("_Set")){
 				if(isLocal){
 					numLocalGetterSetterCall++;
 				}
