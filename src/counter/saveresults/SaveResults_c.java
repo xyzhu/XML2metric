@@ -53,10 +53,10 @@ public class SaveResults_c extends SaveResults{
 		numLabel += fs.numLabel;
 	}
 
-	public int getLocalMethodCallNumber(List<String> functionList,
+	public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
 			List<String> callerList) {
-		int numCall = 0;
+		int numLocalCall = 0;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
 		while(it_method.hasNext()){
@@ -67,9 +67,9 @@ public class SaveResults_c extends SaveResults{
 		while(it_call.hasNext()){
 			callname = it_call.next();
 			if (methodSet.contains(callname)){
-				numCall++;
+				numLocalCall++;
 			}
 		}
-		return numCall;
+		return numLocalCall;
 	}
 }

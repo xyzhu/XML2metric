@@ -46,7 +46,10 @@ public abstract class SaveResults {
 	public int numDeclInStmt = 0;
 	public int numDeclStmtWithInit = 0;
 	public int numAssignInDeclStmt = 0;
-	public int numLocalCall2 = 0;
+	//for C and C++, numLocalFunctionCall2 is used to get the number of local
+	//function calls that have a caller. For Java, numLocalFunctionCall2 is used
+	//to get the number of local method calls.
+	public int numLocalFunctionCall2 = 0;
 
 
 	public void writeResult(String fileName,
@@ -80,8 +83,8 @@ public abstract class SaveResults {
 					getTotalStatistics(fileStatistics);
 				}
 			}
-			numLocalCall2 = getLocalMethodCallNumber(functionList, functionCallList, classList, callerList);
-			numLocalFunctionCall = numLocalCall1 + numLocalCall2;
+			numLocalFunctionCall2 = getLocalFunctionCallNumber(functionList, functionCallList, classList, callerList);
+			numLocalFunctionCall = numLocalCall1 + numLocalFunctionCall2;
 			numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
 			String totalInfo = getTotalStatisticsInfo();
 			writer.write(totalInfo);
@@ -389,6 +392,6 @@ public abstract class SaveResults {
 	public abstract String getDiffTotalStatisticsInfo();
 	public abstract String getDiffFileStatisticsInfo(FileStatistics fileStatistics);
 	public abstract void getDiffTotalStatistics(FileStatistics fs);
-	public abstract int getLocalMethodCallNumber(List<String> functionList,
+	public abstract int getLocalFunctionCallNumber(List<String> functionList,
 	List<String> functionCallList, List<String> classList, List<String> callerList);
 }

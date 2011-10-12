@@ -68,7 +68,7 @@ public class SaveResults_java extends SaveResults{
 		numThrow += fs.numThrow;
 	}
 
-	public int getLocalMethodCallNumber(List<String> functionList,
+	public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
 			List<String> callerList) {
 		int numCall = 0;

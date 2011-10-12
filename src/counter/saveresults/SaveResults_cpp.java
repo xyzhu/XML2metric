@@ -93,10 +93,10 @@ public class SaveResults_cpp extends SaveResults{
         numThrow += fs.numThrow;
     }
 
-    public int getLocalMethodCallNumber(List<String> functionList,
+    public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
 			List<String> callerList) {
-		int numCall = 0;
+		int numLocalCall = 0;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
 		while(it_method.hasNext()){
@@ -119,19 +119,19 @@ public class SaveResults_cpp extends SaveResults{
 		while(it_call.hasNext()){
 			callname = it_call.next();
 			if (methodSet.contains(callname)){
-				numCall++;
+				numLocalCall++;
 			}
 			if(clsize!=0){
 				if(classSet.contains(callname)){
-					numCall++;
+					numLocalCall++;
 				}
 				else if(callname.startsWith("~")){
 					if(classSet.contains(callname.substring(1, callname.length()))){
-						numCall++;
+						numLocalCall++;
 					}
 				}
 			}
 		}
-		return numCall;
+		return numLocalCall;
 	}
 }
