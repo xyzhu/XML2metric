@@ -93,10 +93,10 @@ public abstract class SaveResults {
 			writer.write(fileBuilder.toString());
 			writer.close();
 			if(saveFunction){
-				writeFunction(fileName, functionList, functionCallList);
+				writeFunction(outFileName, functionList, functionCallList);
 			}
 			if(saveOperator){
-				writeOperator(fileName, fileList);
+				writeOperator(outFileName, fileList);
 			}
 		}catch (Exception e){//Catch exception if any
 			System.err.println("Error: " + e.getMessage());
@@ -106,11 +106,9 @@ public abstract class SaveResults {
 	public void writeFunction(String fileName, List<String> functionList,
 			List<String> functionCallList) {
 		try{
-			int index = fileName.indexOf(".");
-			String outFileName = fileName.substring(0, index);
 			//create file
-			FileWriter fw_function = new FileWriter(outFileName +"_functions.txt");
-			FileWriter fw_functioncall = new FileWriter(outFileName +"_functioncalls.txt");
+			FileWriter fw_function = new FileWriter(fileName +"_functions.txt");
+			FileWriter fw_functioncall = new FileWriter(fileName +"_functioncalls.txt");
 			BufferedWriter writer_function = new BufferedWriter(fw_function);
 			BufferedWriter writer_functioncall = new BufferedWriter(fw_functioncall);
 			Iterator<String> it_function = functionList.iterator();
