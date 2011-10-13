@@ -540,7 +540,7 @@ public class CountStatistics {
 			if(str.contains("-=")||str.contains("+=")
 					||str.contains("*=")||str.contains("/=")||str.contains("|=")
 					||str.contains("&=")||str.contains("^=")||str.contains(">>")
-					||str.contains("<<")){
+					||str.contains("<<")||str.contains("==")){
 				numOp++;
 			}
 		}
