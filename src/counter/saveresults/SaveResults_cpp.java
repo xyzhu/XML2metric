@@ -119,6 +119,7 @@ public class SaveResults_cpp extends SaveResults{
 		String callname;
 		while(it_call.hasNext()){
 			callname = it_call.next();
+			isLocal = false;
 			if (methodSet.contains(callname)){
 				numLocalCall++;
 				isLocal = true;
