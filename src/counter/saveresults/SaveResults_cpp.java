@@ -97,7 +97,6 @@ public class SaveResults_cpp extends SaveResults{
 			List<String> functionCallList, List<String> classList, 
 			List<String> callerList) {
 		int numLocalCall = 0;
-		boolean isLocal = false;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
 		while(it_method.hasNext()){
@@ -119,10 +118,8 @@ public class SaveResults_cpp extends SaveResults{
 		String callname;
 		while(it_call.hasNext()){
 			callname = it_call.next();
-			isLocal = false;
 			if (methodSet.contains(callname)){
 				numLocalCall++;
-				isLocal = true;
 			}
 			if(clsize!=0){
 				if(classSet.contains(callname)){
@@ -132,17 +129,6 @@ public class SaveResults_cpp extends SaveResults{
 					if(classSet.contains(callname.substring(1, callname.length()))){
 						numLocalCall++;
 					}
-				}
-			}
-			if(callname.startsWith("get")||callname.startsWith("set")
-					||callname.startsWith("_get")||callname.startsWith("_set")
-					||callname.startsWith("Get")||callname.startsWith("Set")
-					||callname.startsWith("_Get")||callname.startsWith("_Set")){
-				if(isLocal){
-					numLocalGetterSetterCall++;
-				}
-				else{
-					numLibGetterSetterCall++;
 				}
 			}
 		}

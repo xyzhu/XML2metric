@@ -50,8 +50,6 @@ public abstract class SaveResults {
 	//function calls that have a caller. For Java, numLocalFunctionCall2 is used
 	//to get the number of local method calls.
 	public int numLocalFunctionCall2 = 0;
-	public int numLocalGetterSetterCall = 0;
-	public int numLibGetterSetterCall = 0;
 
 
 	public void writeResult(String fileName,
@@ -369,10 +367,6 @@ public abstract class SaveResults {
 		total.append("Local function call: " + numLocalFunctionCall);
 		total.append("\n");
 		total.append("Library function call: " + numLibFunctionCall);
-		total.append("\n");
-		total.append("Local gettersetter call: " + numLocalGetterSetterCall);
-		total.append("\n");
-		total.append("Library gettersetter call: " + numLibGetterSetterCall);
 		total.append("\n");
 		total.append("Zero operator assignment: " + numZeroOpAssign);
 		total.append("\n");
