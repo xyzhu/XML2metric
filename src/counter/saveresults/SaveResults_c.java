@@ -55,7 +55,7 @@ public class SaveResults_c extends SaveResults{
 
 	public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
-			List<String> callerList) {
+			List<String> callerList, List<String> callerFunctionCallList) {
 		int numLocalCall = 0;
 		boolean isLocal = false;
 		Set<String> methodSet = new HashSet<String>();
@@ -72,12 +72,9 @@ public class SaveResults_c extends SaveResults{
 				numLocalCall++;
 				isLocal = true;
 			}
-			if(callname.startsWith("get")||callname.startsWith("set")
-					||callname.startsWith("_get")||callname.startsWith("_set")
-					||callname.startsWith("Get")||callname.startsWith("Set")
-					||callname.startsWith("_Get")||callname.startsWith("_Set")){
+			if(isGetterSetterCall(callname)){
 				if(isLocal){
-					numLocalGetterSetterCall++;
+					numLocalGetterSetterCall2++;
 				}
 				else{
 					numLibGetterSetterCall++;

@@ -269,8 +269,9 @@ public class CodeCounter implements ContentHandler {
 		sr.writeResult(fileName, countStat.getFileList(),
 				countStat.getFunctionList(), 
 				countStat.getFunctionCallList(),countStat.getClassList(),
-				countStat.getCallerList(),countStat.getNumLocalCall(), 
-				saveFunction, saveOperator, savefilestat);
+				countStat.getCallerList(),countStat.getCallerFunctionCallList(),
+				countStat.getNumLocalCall(),countStat.getNumLocalGetterSetterCall(),
+				countStat.getNumLibGetterSetterCall(),saveFunction, saveOperator, savefilestat);
 
 
 	}

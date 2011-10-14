@@ -70,13 +70,13 @@ public class SaveResults_java extends SaveResults{
 
 	public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
-			List<String> callerList) {
-		int numCall = 0;
-		Set<String> methodSet = new HashSet<String>();
-		Iterator<String> it_method = functionList.iterator();
-		while(it_method.hasNext()){
-			methodSet.add(it_method.next());
-		}
+			List<String> callerList, List<String> callerFunctionCallList) {
+		int numLocalCall = 0;
+		//		Set<String> methodSet = new HashSet<String>();
+		//		Iterator<String> it_method = functionList.iterator();
+		//		while(it_method.hasNext()){
+		//			methodSet.add(it_method.next());
+		//		}
 		Set<String> classSet = new HashSet<String>();
 		Iterator<String> it_class = classList.iterator();
 		while(it_class.hasNext()){
@@ -84,12 +84,22 @@ public class SaveResults_java extends SaveResults{
 		}
 		Iterator<String> it_caller = callerList.iterator();
 		String callername;
+		String callname;
+		Iterator<String> it_call = callerFunctionCallList.iterator();
 		while(it_caller.hasNext()){
 			callername = it_caller.next();
+			callname = it_call.next();
 			if (classSet.contains(callername)){
-				numCall++;
+				numLocalCall++;
+				if(isGetterSetterCall(callname))
+					numLocalGetterSetterCall2++;
 			}
+			else{
+				if(isGetterSetterCall(callname))
+					numLibGetterSetterCall++;
+			}
+
 		}
-		return numCall;
+		return numLocalCall;
 	}
 }

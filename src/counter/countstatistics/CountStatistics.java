@@ -183,6 +183,11 @@ public class CountStatistics {
 		currentFile.numArguList++;
 		if(seekingFunctioncallname&&charbucket!=null){
 			functionCallList.add(charbucket.trim());
+			/*
+			 * checkfunctionCall is used to check the method name of a method call.
+			 * it is only used for projects written in Java.
+			 */
+			checkFunctionCall(charbucket.trim());
 			seekingFunctioncallname = false;
 			collectChars = false;
 			charbucket = null;
@@ -572,9 +577,15 @@ public class CountStatistics {
 	public List<String> getCallerList(){
 		return null;
 	}
+	public List<String> getCallerFunctionCallList(){
+		return null;
+	}
 	public void clearMacroList(){};
 	public void setMacroConstAssign(){};
 	public int getNumLocalCall(){return 0;}
+	public int getNumLocalGetterSetterCall(){return 0;}
+	public int getNumLibGetterSetterCall(){return 0;}
 	public void seekCallername(){};
+	public void checkFunctionCall(String callName){};
 	
 }

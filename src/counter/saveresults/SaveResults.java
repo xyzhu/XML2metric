@@ -30,7 +30,7 @@ public abstract class SaveResults {
 	public int numSwitch;
 	public int numCase;
 	public int numReturn;
-	public int numCall;
+	public int numFunctionCall;
 	public int numParamList;
 	public int numParam;
 	public int numArguList;
@@ -52,12 +52,15 @@ public abstract class SaveResults {
 	public int numLocalFunctionCall2 = 0;
 	public int numLocalGetterSetterCall = 0;
 	public int numLibGetterSetterCall = 0;
+	public int numLocalGetterSetterCall2 = 0;
 
 
 	public void writeResult(String fileName,
 			List<FileStatistics> fileList, List<String> functionList,
 			List<String> functionCallList, List<String> classList,
-			List<String> callerList, int numLocalCall1, Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
+			List<String> callerList, List<String> callerFunctionCallList, 
+			int numLocalCall1, int numLocalGetterSetterCall1, int numLibGetterSetterCall1,
+			Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
 		FileStatistics fileStatistics;
 		String fileInfo;
 		try{
@@ -85,9 +88,10 @@ public abstract class SaveResults {
 					getTotalStatistics(fileStatistics);
 				}
 			}
-			numLocalFunctionCall2 = getLocalFunctionCallNumber(functionList, functionCallList, classList, callerList);
+			numLocalFunctionCall2 = getLocalFunctionCallNumber(functionList, functionCallList, classList, callerList, callerFunctionCallList);
 			numLocalFunctionCall = numLocalCall1 + numLocalFunctionCall2;
 			numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
+			numLocalGetterSetterCall = numLocalGetterSetterCall1 + numLocalGetterSetterCall2;
 			String totalInfo = getTotalStatisticsInfo();
 			writer.write(totalInfo);
 			writer.write(fileBuilder.toString());
@@ -274,7 +278,7 @@ public abstract class SaveResults {
 		numBlock += fs.numBlock;
 		numExpr += fs.numExpr;
 		numExprstmt += fs.numExprstmt;
-		numCall += fs.numCall;
+		numFunctionCall += fs.numCall;
 		numContinue += fs.numContinue;
 		numBreak += fs.numBreak;
 		numReturn += fs.numReturn;
@@ -324,7 +328,7 @@ public abstract class SaveResults {
 		total.append("\n");
 		total.append("Function: " + numFunction);
 		total.append("\n");
-		total.append("Call: " + numCall);
+		total.append("Call: " + numFunctionCall);
 		total.append("\n");
 		total.append("Expression statement: " + numExprstmt);
 		total.append("\n");
@@ -392,10 +396,22 @@ public abstract class SaveResults {
 		total.append("\n");
 		return total.toString();
 	}
+	
+	public boolean isGetterSetterCall(String callname){
+		if(callname.startsWith("get")||callname.startsWith("set")
+				||callname.startsWith("_get")||callname.startsWith("_set")
+				||callname.startsWith("Get")||callname.startsWith("Set")
+				||callname.startsWith("_Get")||callname.startsWith("_Set")){
+			return true;
+		}
+		else
+			return false;
+	}
 
 	public abstract String getDiffTotalStatisticsInfo();
 	public abstract String getDiffFileStatisticsInfo(FileStatistics fileStatistics);
 	public abstract void getDiffTotalStatistics(FileStatistics fs);
 	public abstract int getLocalFunctionCallNumber(List<String> functionList,
-	List<String> functionCallList, List<String> classList, List<String> callerList);
+	List<String> functionCallList, List<String> classList, List<String> callerList, 
+	List<String> callerFunctionCallList);
 }
