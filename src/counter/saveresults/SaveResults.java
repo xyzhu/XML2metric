@@ -134,10 +134,8 @@ public abstract class SaveResults {
 			List<FileStatistics> fileList) {
 		FileStatistics fileStatistics;
 		try{
-			int index = fileName.indexOf(".");
-			String outFileName = fileName.substring(0, index);
 			//create file
-			FileWriter fw_operator = new FileWriter(outFileName +"_operator.txt");
+			FileWriter fw_operator = new FileWriter(fileName +"_operator.txt");
 			BufferedWriter writer_operator = new BufferedWriter(fw_operator);
 			String operatorInfo = "";
 			Iterator<FileStatistics> it = fileList.iterator();
