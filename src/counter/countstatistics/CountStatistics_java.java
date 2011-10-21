@@ -41,6 +41,8 @@ public class CountStatistics_java extends CountStatistics{
 		callerList = new LinkedList<String>();
 		callerFunctionCallList = new LinkedList<String>();
 		javaVarType = new HashSet<String>();
+		javaVarType.add("byte");
+		javaVarType.add("short");
 		javaVarType.add("boolean");
 		javaVarType.add("char");
 		javaVarType.add("int");
