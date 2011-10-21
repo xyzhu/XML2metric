@@ -67,7 +67,7 @@ public abstract class SaveResults {
 			int index = fileName.indexOf(".xml");
 			String outFileName = fileName.substring(0, index);
 			//create file
-			FileWriter fw = new FileWriter(outFileName + ".txt");
+			FileWriter fw = new FileWriter(outFileName + "_getset.txt");
 			BufferedWriter writer = new BufferedWriter(fw);
 			StringBuilder fileBuilder = new StringBuilder();
 			Iterator<FileStatistics> it = fileList.iterator();
