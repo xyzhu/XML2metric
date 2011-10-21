@@ -31,6 +31,8 @@ public class CountStatistics_java extends CountStatistics{
 		classobj = new HashMap<String, String>();
 		callerList = new LinkedList<String>();
 		javaVarType = new HashSet<String>();
+		javaVarType.add("byte");
+		javaVarType.add("short");
 		javaVarType.add("boolean");
 		javaVarType.add("char");
 		javaVarType.add("int");
