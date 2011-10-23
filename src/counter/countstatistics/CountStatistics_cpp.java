@@ -1,7 +1,9 @@
 package counter.countstatistics;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import counter.filestatistics.FileStatistics_cpp;
 
@@ -10,8 +12,18 @@ public class CountStatistics_cpp extends CountStatistics{
 
 	//	String functionName;
 	public Boolean seekingClassname = false;
+	public boolean seekingTypename = false;
+	public boolean seekingObjname = false;
 	public List<String> classList;
 	public List<String> macroList;
+	public Set<String> cplusplusVarType;
+	public List<String> objList;
+	public String typename;
+	public boolean inname;
+	public boolean seekingOperandname;
+	public int numOperandname;
+	public boolean maybeOpOverloadCall;
+	public boolean isOpOverloadCall;
 
 	public boolean seekingMacroname = false;
 	public boolean seekingAssignname = false;
@@ -37,6 +49,20 @@ public class CountStatistics_cpp extends CountStatistics{
 		saveOperator = saveop;
 		classList = new LinkedList<String>();
 		macroList = new LinkedList<String>();
+		objList = new LinkedList<String>();
+		cplusplusVarType = new HashSet<String>();
+		cplusplusVarType.add("bool");
+		cplusplusVarType.add("unsigned short int");
+		cplusplusVarType.add("short int");
+		cplusplusVarType.add("unsigned long int");
+		cplusplusVarType.add("long int");
+		cplusplusVarType.add("int");
+		cplusplusVarType.add("unsigned int");
+		cplusplusVarType.add("char");
+		cplusplusVarType.add("wchar_t");
+		cplusplusVarType.add("float");
+		cplusplusVarType.add("double");
+		cplusplusVarType.add("long double");
 	}
 
 	@Override
@@ -102,7 +128,8 @@ public class CountStatistics_cpp extends CountStatistics{
 	}
 
 	public void startName() {
-		if(seekingFunctionname||seekingFunctioncallname||seekingClassname||seekingMacroname) {
+		if(seekingFunctionname||seekingFunctioncallname||
+				seekingClassname||seekingMacroname||seekingTypename||seekingObjname||(seekingOperandname&&numOperandname==1)) {
 			collectChars = true;
 			charbucket = null;
 		}
@@ -115,12 +142,48 @@ public class CountStatistics_cpp extends CountStatistics{
 		if(isassign){
 			isConstAssign = false;
 		}
+		if(inexpr){
+			numOperandname++;
+			seekingOperandname = true;
+		}
+	}
+
+	public void startType() {
+		intype = true;
+		if(indeclstmt){
+			seekingTypename = true;
+		}
 	}
 
 	public void endName(){
 		addClassname();
 		addMacroname();
+		addObjname();
 		checkMacroAssign();
+		if(inexpr&&seekingOperandname&&numOperandname==1){
+			if(!objList.contains(charbucket.trim())){
+				maybeOpOverloadCall = true;
+				collectChars = false;
+				charbucket = null;
+			}
+			else{
+				maybeOpOverloadCall = false;
+				charbucket = null;
+			}
+			seekingOperandname = false;
+		}
+		if(intype){
+			if(seekingTypename&&charbucket!=null){
+				typename = charbucket.trim();
+//				System.out.println(typename);
+				if(!cplusplusVarType.contains(typename)){
+					seekingObjname = true;
+					collectChars = false;
+					charbucket = null;
+				}
+				seekingTypename = false;
+			}
+		}
 	}
 
 	public void addClassname(){
@@ -159,6 +222,15 @@ public class CountStatistics_cpp extends CountStatistics{
 			charbucket = null;
 		}
 	}
+
+	public void addObjname(){
+		if(seekingObjname&&charbucket!=null){
+			objList.add(charbucket.trim());
+			System.out.println(charbucket.trim());
+			seekingObjname = false;
+			collectChars = false;
+		}
+	}
 	/*
 	 *if seeking assignment name is true, the name got is 
 	 *the right part of an assignment, we check if it is
@@ -188,5 +260,18 @@ public class CountStatistics_cpp extends CountStatistics{
 		if(containMacroDefinition&&containMacroAssign){
 			currentFile.numConstAssign += numassign;
 		}
+	}
+
+	public boolean checkOperatorOverloadCall(String str) {
+//		System.out.println(str+"&&&");
+		if(maybeOpOverloadCall){
+			if(str.contains("=")||str.contains("+")||str.contains("-")||str.contains("*")||str.contains("/")){
+				isOpOverloadCall = true;
+				currentFile.numCall++;
+			}
+//			System.out.println(isOpOverloadCall+"$$$$$$$$");
+		}
+		maybeOpOverloadCall = false;
+		return isOpOverloadCall;
 	}
 }

@@ -33,7 +33,11 @@ public class CountStatistics {
 	public boolean newline;
 	public boolean commentline;
 	public boolean indecl;
-	public boolean inexpr;
+	//innodeclexpr is used to find assignment, it is true only then the expression is not in delcaration
+	public boolean innodeclexpr;
+	//inexpr is true when it is in any of the expression. 
+	//This is mainly used to find overloading operator function call.
+	public boolean inexpr; 
 	public boolean incall;
 	/*inargulist is used to tell if an operator is inside
 	 * a call argument list. If so, it can not be an operator
@@ -219,9 +223,10 @@ public class CountStatistics {
 		 * not end in the end of expr.
 		 */
 		if(!indecl){
-			inexpr = true;
+			innodeclexpr = true;
 		}
 		currentFile.numExpr++;
+		inexpr = true;
 	}
 
 	public void startContinue() {
@@ -329,7 +334,7 @@ public class CountStatistics {
 	}
 
 	public void endExpr() {
-		if(inexpr==true&&isassign==true){
+		if(innodeclexpr==true&&isassign==true){
 			//				inexpr = false;
 
 			for(int i=0; i<numassign;i++){
@@ -355,7 +360,7 @@ public class CountStatistics {
 			numOperator = 0;
 			numassign = 0;
 		}
-		inexpr = false;
+		innodeclexpr = false;
 	}
 
 	public void endArguList(){
@@ -400,8 +405,8 @@ public class CountStatistics {
 
 	public void characterHandle(char[] text, int start, int length) {
 		//								System.out.println(new String(text, start, length));
+		String str = new String(text, start, length);
 		if (collectChars) {
-			String str = new String(text, start, length);
 			if (charbucket == null) {
 				charbucket = str;
 			}
@@ -412,17 +417,16 @@ public class CountStatistics {
 		if(unitlevel > 0){
 			getLine(text, start, length);
 			if(!incomment){
-				getNumAssignment(text, start, length);
+				getNumAssignment(str);
+				boolean isOpOverloadCall = checkOperatorOverloadCall(str);
 			}
 		}
 	}
+
 	/**
-	 * @param text
-	 * @param start
-	 * @param length
+	 * @param str
 	 */
-	public void getNumAssignment(char[] text, int start, int length) {
-		String str = new String(text, start, length);
+	public void getNumAssignment(String str) {
 		//						System.out.println(str);
 		if(str.equals("++")||str.equals("--")){
 			increaseAssignment();
@@ -450,7 +454,7 @@ public class CountStatistics {
 	 */
 	private void setAssignment(String str) {
 		if(!includeInString(str)){
-			if(indecl==true||inexpr==true){
+			if(indecl==true||innodeclexpr==true){
 				increaseAssignment();
 				isassign = true;
 				numassign++;
@@ -576,5 +580,6 @@ public class CountStatistics {
 	public void setMacroConstAssign(){};
 	public int getNumLocalCall(){return 0;}
 	public void seekCallername(){};
+	public boolean checkOperatorOverloadCall(String str){return false;}
 	
 }
