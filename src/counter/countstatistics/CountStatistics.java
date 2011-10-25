@@ -88,6 +88,8 @@ public class CountStatistics {
 	public List<String> functionList;
 	public List<String> functionCallList;
 
+	public int numOpOverloadCall = 0;
+
 	public CountStatistics() {
 		QualifiedName.createCollection();
 		unitlevel = 0;
@@ -293,8 +295,12 @@ public class CountStatistics {
 			}
 			if(numOperator==0){
 				currentFile.numZeroOpAssign += numassign;
+//				System.out.println("$$$$$$");
 			}
 			if(isCallAssign==true&&numOperator==0){
+				currentFile.numZeroOpCallAssign += numassign;
+			}
+			if(isassign&&numOpOverloadCall!=0){
 				currentFile.numZeroOpCallAssign += numassign;
 			}
 			if(numOperator==0){
@@ -335,13 +341,15 @@ public class CountStatistics {
 			for(int i=0; i<numassign;i++){
 				addNumOperator(numOperator);
 			}
-			if(numOperator==0){
+			if(numOperator<=0){
 				currentFile.numZeroOpAssign += numassign;
+				output();
+//				System.out.println("$$$$$$$$$$$$$");
 			}
-			if(isCallAssign==true&&numOperator==0){
+			if(isCallAssign==true&&numOperator<=0){
 				currentFile.numZeroOpCallAssign += numassign;
 			}
-			if(numOperator==0){
+			if(numOperator<=0){
 				if(isConstAssign){
 					currentFile.numConstAssign += numassign;
 				}
@@ -415,6 +423,10 @@ public class CountStatistics {
 			if(!incomment){
 				getNumAssignment(str);
 				checkOperatorOverloadCall(str);
+				if(isassign==true&&!inargulist&&numOpOverloadCall!=0){
+					numOperator += numOpOverloadCall;
+				}
+				numOpOverloadCall = 0;
 			}
 		}
 	}
@@ -543,6 +555,9 @@ public class CountStatistics {
 					||str.contains("<<")||str.contains("==")){
 				numOp++;
 			}
+			if(str.contains("operator")){
+				numOp--;
+			}
 		}
 		return numOp;
 	}
@@ -572,7 +587,7 @@ public class CountStatistics {
 	public List<String> getCallerList(){
 		return null;
 	}
-	
+
 	public List<String> getOperandTypeList(){
 		return null;
 	}
@@ -583,5 +598,6 @@ public class CountStatistics {
 	public void seekCallername(){};
 	public void checkOperatorOverloadCall(String str){};
 	public void stopSeekingOperator(){};
+	public void output(){};
 
 }
