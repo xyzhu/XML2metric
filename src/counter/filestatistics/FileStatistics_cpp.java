@@ -16,6 +16,7 @@ public class FileStatistics_cpp extends FileStatistics{
 	public int numDestructordecl;
 	public int numDestructor;
 	public int numUnion;
+	public int numOpOverloadCall;
 	
 	public FileStatistics_cpp(){
 		numTotalLine = 0;
@@ -87,6 +88,12 @@ public class FileStatistics_cpp extends FileStatistics{
 	}
 	public void increaseNumUnion(){
 		numUnion++;
+	}
+	public void increaseNumOpOverloadCall(){//temp
+		numOpOverloadCall++;
+	}
+	public void decreaseNumOpOverloadCall(){
+		numOpOverloadCall--;
 	}
 	public int getNumStruct(){
 		return numStruct;

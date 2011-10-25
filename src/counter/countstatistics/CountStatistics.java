@@ -9,7 +9,7 @@ import counter.filestatistics.FileStatistics;
 
 public class CountStatistics {
 
-//	public String filename;
+	//	public String filename;
 	FileStatistics currentFile;
 	/*seekingFunctionname is used to tell if
 	 * a function name is going to be collected,
@@ -35,9 +35,6 @@ public class CountStatistics {
 	public boolean indecl;
 	//innodeclexpr is used to find assignment, it is true only then the expression is not in delcaration
 	public boolean innodeclexpr;
-	//inexpr is true when it is in any of the expression. 
-	//This is mainly used to find overloading operator function call.
-	public boolean inexpr; 
 	public boolean incall;
 	/*inargulist is used to tell if an operator is inside
 	 * a call argument list. If so, it can not be an operator
@@ -149,6 +146,7 @@ public class CountStatistics {
 		if(unitlevel >= 0){
 			fileList.add(currentFile);
 			clearMacroList();
+			clearObjList();
 		}
 	}
 
@@ -226,7 +224,6 @@ public class CountStatistics {
 			innodeclexpr = true;
 		}
 		currentFile.numExpr++;
-		inexpr = true;
 	}
 
 	public void startContinue() {
@@ -314,7 +311,7 @@ public class CountStatistics {
 				//is parsed correctly by srcml. So we increase by 1
 				//for these assignments
 				if(numassign<=2){
-				currentFile.numAssignInDeclStmt += numassign;
+					currentFile.numAssignInDeclStmt += numassign;
 				}
 				else{
 					currentFile.numAssignInDeclStmt++;
@@ -335,8 +332,6 @@ public class CountStatistics {
 
 	public void endExpr() {
 		if(innodeclexpr==true&&isassign==true){
-			//				inexpr = false;
-
 			for(int i=0; i<numassign;i++){
 				addNumOperator(numOperator);
 			}
@@ -361,6 +356,7 @@ public class CountStatistics {
 			numassign = 0;
 		}
 		innodeclexpr = false;
+		stopSeekingOperator();
 	}
 
 	public void endArguList(){
@@ -384,7 +380,7 @@ public class CountStatistics {
 	public void endDeclStmt(){
 		indeclstmt = false;
 	}
-	
+
 	public List<String> getFunctionList() {
 		return functionList;
 	}
@@ -404,7 +400,7 @@ public class CountStatistics {
 
 
 	public void characterHandle(char[] text, int start, int length) {
-		//								System.out.println(new String(text, start, length));
+//		System.out.println(new String(text, start, length));
 		String str = new String(text, start, length);
 		if (collectChars) {
 			if (charbucket == null) {
@@ -418,7 +414,7 @@ public class CountStatistics {
 			getLine(text, start, length);
 			if(!incomment){
 				getNumAssignment(str);
-				boolean isOpOverloadCall = checkOperatorOverloadCall(str);
+				checkOperatorOverloadCall(str);
 			}
 		}
 	}
@@ -577,9 +573,11 @@ public class CountStatistics {
 		return null;
 	}
 	public void clearMacroList(){};
+	public void clearObjList(){};
 	public void setMacroConstAssign(){};
 	public int getNumLocalCall(){return 0;}
 	public void seekCallername(){};
-	public boolean checkOperatorOverloadCall(String str){return false;}
-	
+	public void checkOperatorOverloadCall(String str){};
+	public void stopSeekingOperator(){};
+
 }

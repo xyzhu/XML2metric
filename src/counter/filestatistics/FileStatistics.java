@@ -79,6 +79,7 @@ public class FileStatistics {
 	public void increaseNumThrow(){};
 	public void increaseNumMacro(){};
 	public void increaseNumUnion(){};
+	public void increaseNumOpOverloadCall(){};//temp
 	public int getNumLabel(){return 0;}
 	public int getNumClass(){return 0;};
 	public int getNumConstructor(){return 0;}
@@ -93,5 +94,6 @@ public class FileStatistics {
 	public int getNumDestructordecl(){return 0;}
 	public int getNumDestructor(){return 0;}
 	public int getUnion(){return 0;}
+	public void decreaseNumOpOverloadCall(){};
 
 }

@@ -1,8 +1,10 @@
 package counter.countstatistics;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import counter.filestatistics.FileStatistics_cpp;
@@ -17,13 +19,14 @@ public class CountStatistics_cpp extends CountStatistics{
 	public List<String> classList;
 	public List<String> macroList;
 	public Set<String> cplusplusVarType;
-	public List<String> objList;
+	public Map<String, String> classobj;
 	public String typename;
 	public boolean inname;
 	public boolean seekingOperandname;
 	public int numOperandname;
 	public boolean maybeOpOverloadCall;
-	public boolean isOpOverloadCall;
+	public String operandname;
+	public boolean isMinusOverload;
 
 	public boolean seekingMacroname = false;
 	public boolean seekingAssignname = false;
@@ -49,7 +52,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		saveOperator = saveop;
 		classList = new LinkedList<String>();
 		macroList = new LinkedList<String>();
-		objList = new LinkedList<String>();
+		classobj = new HashMap<String, String>();
 		cplusplusVarType = new HashSet<String>();
 		cplusplusVarType.add("bool");
 		cplusplusVarType.add("unsigned short int");
@@ -63,6 +66,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		cplusplusVarType.add("float");
 		cplusplusVarType.add("double");
 		cplusplusVarType.add("long double");
+		cplusplusVarType.add("void");
 	}
 
 	@Override
@@ -133,6 +137,14 @@ public class CountStatistics_cpp extends CountStatistics{
 			collectChars = true;
 			charbucket = null;
 		}
+		if(seekingOperandname&&numOperandname==0){
+			collectChars = true;
+			charbucket = null;
+			numOperandname++;
+		}
+		if(numOperandname>0){
+			maybeOpOverloadCall = false;
+		}
 		if(isassign&&containMacroDefinition){
 			seekingAssignname = true;
 			containMacroAssign = false;
@@ -141,10 +153,6 @@ public class CountStatistics_cpp extends CountStatistics{
 		}
 		if(isassign){
 			isConstAssign = false;
-		}
-		if(inexpr){
-			numOperandname++;
-			seekingOperandname = true;
 		}
 	}
 
@@ -155,27 +163,44 @@ public class CountStatistics_cpp extends CountStatistics{
 		}
 	}
 
+	public void startExpr() {
+		/*
+		 * if a expr is inside a decl, the assignment can
+		 * not end in the end of expr.
+		 */
+		if(!indecl){
+			innodeclexpr = true;
+		}
+		currentFile.numExpr++;
+		seekingOperandname = true;
+		numOperandname = 0;
+		operandname = null;
+	}
+
 	public void endName(){
 		addClassname();
 		addMacroname();
 		addObjname();
 		checkMacroAssign();
-		if(inexpr&&seekingOperandname&&numOperandname==1){
-			if(!objList.contains(charbucket.trim())){
+		if(seekingOperandname&&numOperandname==1&&charbucket!=null){
+			operandname = charbucket.trim();
+			if(operandname.equals("cout")){
+				System.out.println(operandname+"$$$$$$$$$$$$");
+				currentFile.increaseNumOpOverloadCall();//temp
+			}
+			else if(classobj.keySet().contains(operandname)){
 				maybeOpOverloadCall = true;
 				collectChars = false;
 				charbucket = null;
 			}
 			else{
 				maybeOpOverloadCall = false;
-				charbucket = null;
 			}
 			seekingOperandname = false;
 		}
 		if(intype){
 			if(seekingTypename&&charbucket!=null){
 				typename = charbucket.trim();
-//				System.out.println(typename);
 				if(!cplusplusVarType.contains(typename)){
 					seekingObjname = true;
 					collectChars = false;
@@ -203,6 +228,10 @@ public class CountStatistics_cpp extends CountStatistics{
 		containMacroDefinition = false;
 	}
 
+	public void clearObjList(){
+		classobj.clear();
+	}
+
 	public void setMacroConstAssign(){
 		if(containMacroDefinition&&containMacroAssign){
 			currentFile.numConstAssign += numassign;
@@ -225,11 +254,14 @@ public class CountStatistics_cpp extends CountStatistics{
 
 	public void addObjname(){
 		if(seekingObjname&&charbucket!=null){
-			objList.add(charbucket.trim());
-			System.out.println(charbucket.trim());
+			classobj.put(charbucket.trim(), typename);
 			seekingObjname = false;
 			collectChars = false;
 		}
+	}
+	
+	public void stopSeekingOperator(){
+		maybeOpOverloadCall = false;
 	}
 	/*
 	 *if seeking assignment name is true, the name got is 
@@ -262,16 +294,25 @@ public class CountStatistics_cpp extends CountStatistics{
 		}
 	}
 
-	public boolean checkOperatorOverloadCall(String str) {
-//		System.out.println(str+"&&&");
+	public void checkOperatorOverloadCall(String str) {
 		if(maybeOpOverloadCall){
-			if(str.contains("=")||str.contains("+")||str.contains("-")||str.contains("*")||str.contains("/")){
-				isOpOverloadCall = true;
-				currentFile.numCall++;
+			if(str.trim().equals("==")||str.trim().equals("!=")||str.trim().equals("+")
+					||str.trim().equals("*")||str.trim().equals("/")||str.trim().equals("+=")
+					||str.trim().equals("-+")||str.trim().equals("*=")||str.trim().equals("/=")){
+				currentFile.increaseNumOpOverloadCall();//
+				maybeOpOverloadCall = false;
 			}
-//			System.out.println(isOpOverloadCall+"$$$$$$$$");
+			if(isMinusOverload){
+				if(str.trim().equals(">")){
+					currentFile.decreaseNumOpOverloadCall();
+					}
+				maybeOpOverloadCall = false;
+				isMinusOverload = false;
+			}
+			if(str.trim().equals("-")){
+				isMinusOverload = true;
+				currentFile.increaseNumOpOverloadCall();
+			}
 		}
-		maybeOpOverloadCall = false;
-		return isOpOverloadCall;
 	}
 }

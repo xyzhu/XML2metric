@@ -17,6 +17,7 @@ public class SaveResults_cpp extends SaveResults{
     public int numTry = 0;
     public int numCatch = 0;
     public int numThrow = 0;
+    public int numOpOverloadCall = 0;
 
     @Override
 	public String getDiffTotalStatisticsInfo() {
@@ -24,6 +25,8 @@ public class SaveResults_cpp extends SaveResults{
         total.append("Class: " + numClass);
         total.append("\n");
         total.append("Struct: " + numStruct);
+        total.append("\n");
+        total.append("Operator overload call: " + numOpOverloadCall);
         total.append("\n");
         total.append("Constructor declaration: " + numConstructordecl);
         total.append("\n");
@@ -59,6 +62,8 @@ public class SaveResults_cpp extends SaveResults{
         sBuilder.append("\n");
         sBuilder.append("Struct: " + fs.numStruct);
         sBuilder.append("\n");
+        sBuilder.append("Operator overload call: " + fs.numOpOverloadCall);
+        sBuilder.append("\n");
         sBuilder.append("Constructor declaration: " + fs.numConstructordecl);
         sBuilder.append("\n");
         sBuilder.append("Destructor declaration: " + fs.numDestructordecl);
@@ -91,6 +96,7 @@ public class SaveResults_cpp extends SaveResults{
         numTry += fs.numTry;
         numCatch += fs.numCatch;
         numThrow += fs.numThrow;
+        numOpOverloadCall += fs.numOpOverloadCall;
     }
 
     public int getLocalFunctionCallNumber(List<String> functionList,
