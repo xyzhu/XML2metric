@@ -50,12 +50,15 @@ public abstract class SaveResults {
 	//function calls that have a caller. For Java, numLocalFunctionCall2 is used
 	//to get the number of local method calls.
 	public int numLocalFunctionCall2 = 0;
+	public int numLocalOpOverloadCall = 0;
+	public int numLibOpOverloadCall = 0;
 
 
 	public void writeResult(String fileName,
 			List<FileStatistics> fileList, List<String> functionList,
 			List<String> functionCallList, List<String> classList,
-			List<String> callerList, int numLocalCall1, Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
+			List<String> callerList, int numLocalCall1,List<String> operandTypeList,
+			Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
 		FileStatistics fileStatistics;
 		String fileInfo;
 		try{
@@ -84,8 +87,10 @@ public abstract class SaveResults {
 				}
 			}
 			numLocalFunctionCall2 = getLocalFunctionCallNumber(functionList, functionCallList, classList, callerList);
+			numLocalOpOverloadCall = getLocalOpOverloadCall(classList,operandTypeList);
 			numLocalFunctionCall = numLocalCall1 + numLocalFunctionCall2;
-			numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
+			numLibOpOverloadCall = getLibOpOverloadCall();;
+			numLibFunctionCall = functionCallList.size() - numLocalFunctionCall + numLibOpOverloadCall;
 			String totalInfo = getTotalStatisticsInfo();
 			writer.write(totalInfo);
 			writer.write(fileBuilder.toString());
@@ -389,5 +394,10 @@ public abstract class SaveResults {
 	public abstract String getDiffFileStatisticsInfo(FileStatistics fileStatistics);
 	public abstract void getDiffTotalStatistics(FileStatistics fs);
 	public abstract int getLocalFunctionCallNumber(List<String> functionList,
-	List<String> functionCallList, List<String> classList, List<String> callerList);
+			List<String> functionCallList, List<String> classList, List<String> callerList);
+
+	public int getLibOpOverloadCall() {return 0;}
+	public int getLocalOpOverloadCall(List<String> classList,
+			List<String> operandTypeList) {	return 0;}
+
 }

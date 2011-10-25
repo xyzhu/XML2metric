@@ -572,6 +572,10 @@ public class CountStatistics {
 	public List<String> getCallerList(){
 		return null;
 	}
+	
+	public List<String> getOperandTypeList(){
+		return null;
+	}
 	public void clearMacroList(){};
 	public void clearObjList(){};
 	public void setMacroConstAssign(){};

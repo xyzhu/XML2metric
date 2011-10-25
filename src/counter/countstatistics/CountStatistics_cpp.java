@@ -20,6 +20,7 @@ public class CountStatistics_cpp extends CountStatistics{
 	public List<String> macroList;
 	public Set<String> cplusplusVarType;
 	public Map<String, String> classobj;
+	public List<String> operandTypeList;
 	public String typename;
 	public boolean inname;
 	public boolean seekingOperandname;
@@ -54,19 +55,18 @@ public class CountStatistics_cpp extends CountStatistics{
 		macroList = new LinkedList<String>();
 		classobj = new HashMap<String, String>();
 		cplusplusVarType = new HashSet<String>();
+		operandTypeList = new LinkedList<String>();
 		cplusplusVarType.add("bool");
-		cplusplusVarType.add("unsigned short int");
-		cplusplusVarType.add("short int");
-		cplusplusVarType.add("unsigned long int");
 		cplusplusVarType.add("long int");
 		cplusplusVarType.add("int");
-		cplusplusVarType.add("unsigned int");
 		cplusplusVarType.add("char");
 		cplusplusVarType.add("wchar_t");
 		cplusplusVarType.add("float");
 		cplusplusVarType.add("double");
-		cplusplusVarType.add("long double");
+		cplusplusVarType.add("long");
 		cplusplusVarType.add("void");
+		cplusplusVarType.add("size_t");
+		cplusplusVarType.add("short");
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		if(seekingOperandname&&numOperandname==1&&charbucket!=null){
 			operandname = charbucket.trim();
 			if(operandname.equals("cout")){
-				System.out.println(operandname+"$$$$$$$$$$$$");
+				operandTypeList.add("cout");
 				currentFile.increaseNumOpOverloadCall();//temp
 			}
 			else if(classobj.keySet().contains(operandname)){
@@ -201,12 +201,15 @@ public class CountStatistics_cpp extends CountStatistics{
 		if(intype){
 			if(seekingTypename&&charbucket!=null){
 				typename = charbucket.trim();
-				if(!cplusplusVarType.contains(typename)){
-					seekingObjname = true;
-					collectChars = false;
-					charbucket = null;
+				if(!(typename.equals("const")||typename.equals("unsigned")
+						||typename.equals("static"))){
+					if(!cplusplusVarType.contains(typename)){
+						seekingObjname = true;
+						collectChars = false;
+						charbucket = null;
+					}
+					seekingTypename = false;
 				}
-				seekingTypename = false;
 			}
 		}
 	}
@@ -221,6 +224,10 @@ public class CountStatistics_cpp extends CountStatistics{
 
 	public List<String> getClassList(){
 		return classList;
+	}
+
+	public List<String> getOperandTypeList(){
+		return operandTypeList;
 	}
 
 	public void clearMacroList(){
@@ -259,7 +266,7 @@ public class CountStatistics_cpp extends CountStatistics{
 			collectChars = false;
 		}
 	}
-	
+
 	public void stopSeekingOperator(){
 		maybeOpOverloadCall = false;
 	}
@@ -299,19 +306,22 @@ public class CountStatistics_cpp extends CountStatistics{
 			if(str.trim().equals("==")||str.trim().equals("!=")||str.trim().equals("+")
 					||str.trim().equals("*")||str.trim().equals("/")||str.trim().equals("+=")
 					||str.trim().equals("-+")||str.trim().equals("*=")||str.trim().equals("/=")){
-				currentFile.increaseNumOpOverloadCall();//
+				currentFile.increaseNumOpOverloadCall();
+				operandTypeList.add(classobj.get(operandname));
 				maybeOpOverloadCall = false;
 			}
 			if(isMinusOverload){
 				if(str.trim().equals(">")){
 					currentFile.decreaseNumOpOverloadCall();
-					}
+					operandTypeList.remove(classobj.get(operandname));
+				}
 				maybeOpOverloadCall = false;
 				isMinusOverload = false;
 			}
 			if(str.trim().equals("-")){
 				isMinusOverload = true;
 				currentFile.increaseNumOpOverloadCall();
+				operandTypeList.add(classobj.get(operandname));
 			}
 		}
 	}
