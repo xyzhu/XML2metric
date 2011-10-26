@@ -75,6 +75,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		currentFile.setFileName(fileName);
 		unitlevel++;
 		filename = fileName;
+//		System.out.println(filename);
 	}
 
 	public void startStruct(){
@@ -158,8 +159,9 @@ public class CountStatistics_cpp extends CountStatistics{
 
 	public void startType() {
 		intype = true;
-		if(indeclstmt){
+		if(indecl){
 			seekingTypename = true;
+			typename = null;
 		}
 	}
 
@@ -201,15 +203,6 @@ public class CountStatistics_cpp extends CountStatistics{
 		if(intype){
 			if(seekingTypename&&charbucket!=null){
 				typename = charbucket.trim();
-				if(!(typename.equals("const")||typename.equals("unsigned")
-						||typename.equals("static"))){
-					if(!cplusplusVarType.contains(typename)){
-						seekingObjname = true;
-						collectChars = false;
-						charbucket = null;
-					}
-					seekingTypename = false;
-				}
 			}
 		}
 	}
@@ -301,35 +294,69 @@ public class CountStatistics_cpp extends CountStatistics{
 		}
 	}
 
+	public void endType(){
+		intype = false;
+		if(!(typename==null)){
+			if(!(typename.equals("const")||typename.equals("unsigned")
+					||typename.equals("static"))){
+				if(!cplusplusVarType.contains(typename)){
+					seekingObjname = true;
+					collectChars = false;
+					charbucket = null;
+				}
+			}
+		}
+		seekingTypename = false;
+	}
 	public void checkOperatorOverloadCall(String str) {
+		String s = str.trim();
 		if(maybeOpOverloadCall){
-			if(str.trim().equals("==")||str.trim().equals("!=")||str.trim().equals("+")
-					||str.trim().equals("*")||str.trim().equals("/")||str.trim().equals("+=")
-					||str.trim().equals("-=")||str.trim().equals("*=")||str.trim().equals("/=")){
+			if(s.equals("==")||s.equals("!=")||s.equals("+")
+					||s.equals("*")||s.equals("/")||s.equals("+=")
+					||s.equals("-=")||s.equals("*=")||s.equals("/=")
+					||s.equals("++")||s.equals("--")){
 				currentFile.increaseNumOpOverloadCall();
-				numOpOverloadCall--;
 				operandTypeList.add(classobj.get(operandname));
 				maybeOpOverloadCall = false;
+				tempNumOpOverloadCall++;
+				numOpOverloadCall++;
+//				System.out.println(operandname+"111111111"+ str);
+				if(isassign&&(s.equals("++")||s.equals("--"))){
+					tempNumOpOverloadCall--;
+//					System.out.println("2222222222");
+				}
+				if(s.equals("!=")){
+					tempNumOpOverloadCall--;
+					numOpOverloadCall--;
+				}
+				if(s.equals("+=")||s.equals("-=")){
+					isassign = false;
+					decreaseAssignment();
+					numassign = 0;
+					numOpOverloadCall = 0;
+				}
 			}
-			if(isMinusOverload){
-				if(str.trim().equals(">")){
+			else if(isMinusOverload){
+				if(s.equals(">")){
 					currentFile.decreaseNumOpOverloadCall();
 					operandTypeList.remove(classobj.get(operandname));
-					numOpOverloadCall++;
+					tempNumOpOverloadCall--;
+					numOpOverloadCall--;
+//					System.out.println("333333333333");
 				}
 				maybeOpOverloadCall = false;
 				isMinusOverload = false;
 			}
-			if(str.trim().equals("-")){
+			else if(s.equals("-")){
 				isMinusOverload = true;
 				currentFile.increaseNumOpOverloadCall();
-				numOpOverloadCall--;
+				tempNumOpOverloadCall++;
+				numOpOverloadCall++;
+//				System.out.println("4444444444");
 				operandTypeList.add(classobj.get(operandname));
 			}
+			else
+				maybeOpOverloadCall = false;
 		}
-	}
-	
-	public void output(){
-		System.out.println(filename+"$$$"+typename+"$$$"+operandname+"$$$");
 	}
 }

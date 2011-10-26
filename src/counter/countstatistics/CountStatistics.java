@@ -44,10 +44,10 @@ public class CountStatistics {
 	public boolean isassign;
 	public int numOperator;
 	public int numassign;
-	/*isCallAssign is used to tell if the right part of 
+	/*includeCallAssign is used to tell if the right part of 
 	 * a assignment contains a function call
 	 */
-	public boolean isCallAssign;
+	public boolean includeCallAssign;
 	public boolean inparam;
 	public boolean infor;
 	public boolean indeclstmt;
@@ -88,6 +88,7 @@ public class CountStatistics {
 	public List<String> functionList;
 	public List<String> functionCallList;
 
+	public int tempNumOpOverloadCall = 0;
 	public int numOpOverloadCall = 0;
 
 	public CountStatistics() {
@@ -99,7 +100,7 @@ public class CountStatistics {
 		intype = false;
 		collectChars = false;
 		isassign = false;
-		isCallAssign = false;
+		includeCallAssign = false;
 		ispointer = false;
 		fileList = new LinkedList<FileStatistics>();
 		seekingFunctionname = false;
@@ -172,10 +173,14 @@ public class CountStatistics {
 	public void increaseAssignment() {
 		currentFile.numAssignment++;
 	}
+	
+	public void decreaseAssignment() {
+		currentFile.numAssignment--;
+	}
 
 	public void startParamList() {
 		currentFile.numParamList++;
-		if(seekingFunctionname){
+		if(seekingFunctionname&&charbucket!=null){
 			functionList.add(charbucket.trim());
 			seekingFunctionname = false;
 			collectChars = false;
@@ -205,9 +210,9 @@ public class CountStatistics {
 	public void startCall() {
 		currentFile.numCall++;
 		seekingFunctioncallname = true;
-		if(isassign==true&&isCallAssign==false){
+		if(isassign==true&&includeCallAssign==false){
 			increaseCallAssignment();
-			isCallAssign=true;
+			includeCallAssign=true;
 		}
 		incall = true;
 		seekCallername();
@@ -285,32 +290,15 @@ public class CountStatistics {
 		}
 	}
 
+
+
+	public void endType() {
+		intype = false;
+	}
+
 	public void endDecl() {
 		if(indecl==true&&isassign==true){
-			//				indecl = false;
-			if(saveOperator){
-				for(int i=0; i<numassign;i++){
-					addNumOperator(numOperator);
-				}
-			}
-			if(numOperator==0){
-				currentFile.numZeroOpAssign += numassign;
-//				System.out.println("$$$$$$");
-			}
-			if(isCallAssign==true&&numOperator==0){
-				currentFile.numZeroOpCallAssign += numassign;
-			}
-			if(isassign&&numOpOverloadCall!=0){
-				currentFile.numZeroOpCallAssign += numassign;
-			}
-			if(numOperator==0){
-				if(isConstAssign){
-					currentFile.numConstAssign += numassign;
-				}
-				else{
-					setMacroConstAssign();
-				}
-			}
+			decideAssignment();
 			if(indeclstmt&&isassign){
 				currentFile.numDeclStmtWithInit++;
 				//we think declaration with more than two assignment
@@ -324,47 +312,55 @@ public class CountStatistics {
 				}
 			}
 			isassign = false;
-			isCallAssign = false;
+			includeCallAssign = false;
 			numOperator = 0;
 			numassign = 0;
+			numOpOverloadCall = 0;
 		}
 		indecl = false;
 	}
 
-
-	public void endType() {
-		intype = false;
+	public void endExpr() {
+		if(!incall){
+			if(innodeclexpr==true&&isassign==true){
+				decideAssignment();
+				isassign = false;
+				includeCallAssign = false;
+				numOperator = 0;
+				numassign = 0;
+				numOpOverloadCall = 0;
+			}
+			innodeclexpr = false;
+			stopSeekingOperator();
+		}
 	}
 
-	public void endExpr() {
-		if(innodeclexpr==true&&isassign==true){
+	public void decideAssignment() {
+		if(saveOperator){
 			for(int i=0; i<numassign;i++){
 				addNumOperator(numOperator);
 			}
-			if(numOperator<=0){
-				currentFile.numZeroOpAssign += numassign;
-				output();
-//				System.out.println("$$$$$$$$$$$$$");
-			}
-			if(isCallAssign==true&&numOperator<=0){
-				currentFile.numZeroOpCallAssign += numassign;
-			}
-			if(numOperator<=0){
-				if(isConstAssign){
-					currentFile.numConstAssign += numassign;
-				}
-				else{
-					//check if this is a macro assignment
-					setMacroConstAssign();
-				}
-			}
-			isassign = false;
-			isCallAssign = false;
-			numOperator = 0;
-			numassign = 0;
 		}
-		innodeclexpr = false;
-		stopSeekingOperator();
+		if(numOperator==0){
+			currentFile.numZeroOpAssign += numassign;
+		}
+		if(includeCallAssign==true&&numOperator==0){
+			currentFile.numZeroOpCallAssign += numassign;
+//			System.out.println("@@@@@@@@@@@@"+numassign);
+		}
+		if(isassign&&!includeCallAssign&&numOpOverloadCall>0&&numOperator==0){
+			currentFile.numZeroOpCallAssign += numassign;
+//			System.out.println("$$$$$$$$$$$$$"+numassign);
+			numOpOverloadCall = 0;
+		}
+		if(numOperator==0){
+			if(isConstAssign){
+				currentFile.numConstAssign += numassign;
+			}
+			else{
+				setMacroConstAssign();
+			}
+		}
 	}
 
 	public void endArguList(){
@@ -421,12 +417,13 @@ public class CountStatistics {
 		if(unitlevel > 0){
 			getLine(text, start, length);
 			if(!incomment){
+				tempNumOpOverloadCall = 0;
 				getNumAssignment(str);
 				checkOperatorOverloadCall(str);
-				if(isassign==true&&!inargulist&&numOpOverloadCall!=0){
-					numOperator += numOpOverloadCall;
+				if(isassign==true&&!inargulist&&tempNumOpOverloadCall!=0){
+					numOperator -= tempNumOpOverloadCall;
 				}
-				numOpOverloadCall = 0;
+				tempNumOpOverloadCall = 0;
 			}
 		}
 	}
@@ -436,8 +433,10 @@ public class CountStatistics {
 	 */
 	public void getNumAssignment(String str) {
 		//						System.out.println(str);
-		if(str.equals("++")||str.equals("--")){
+		if(!isassign&&(str.equals("++")||str.equals("--"))){
 			increaseAssignment();
+			isassign = true;
+			numOpOverloadCall = 0;
 		}
 		if(str.contains("=")&&!str.contains("!=")
 				&&!str.contains("==")){
@@ -465,9 +464,11 @@ public class CountStatistics {
 			if(indecl==true||innodeclexpr==true){
 				increaseAssignment();
 				isassign = true;
+				tempNumOpOverloadCall = 0;
 				numassign++;
 				isConstAssign = true;
 				containOnlyWhiteSpace = true;
+				numOperator = 0;
 			}
 		}
 	}
@@ -528,7 +529,7 @@ public class CountStatistics {
 		char c;
 		for(int i=0; i<l;i++){
 			c = str.charAt(i);
-			if(c=='+'||c=='-'||c=='*'||c=='\\'
+			if(c=='+'||c=='-'||c=='*'||c=='/'
 					||c=='&'||c=='|'||c=='^'||c=='~'){//count bitwise operator
 				numOp++;
 			}
@@ -549,13 +550,15 @@ public class CountStatistics {
 			if(c!=' '&&c!='='){
 				containOnlyWhiteSpace = false;
 			}
-			if(str.contains("-=")||str.contains("+=")
-					||str.contains("*=")||str.contains("/=")||str.contains("|=")
-					||str.contains("&=")||str.contains("^=")||str.contains(">>")
-					||str.contains("<<")||str.contains("==")){
+			//			if(str.contains("-=")||str.contains("+=")
+//			//					||str.contains("*=")||str.contains("/=")||str.contains("|=")
+//			if(str.contains("|=")
+//					||str.contains("&=")||str.contains("^=")||str.contains(">>")
+//					||str.contains("<<")||str.contains("==")){
+			if(str.contains("<<")||str.contains(">>")||str.contains("==")){
 				numOp++;
 			}
-			if(str.contains("operator")){
+			if(incall&&str.contains("operator")){
 				numOp--;
 			}
 		}
@@ -598,6 +601,5 @@ public class CountStatistics {
 	public void seekCallername(){};
 	public void checkOperatorOverloadCall(String str){};
 	public void stopSeekingOperator(){};
-	public void output(){};
 
 }

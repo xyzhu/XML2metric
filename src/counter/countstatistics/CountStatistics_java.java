@@ -80,7 +80,7 @@ public class CountStatistics_java extends CountStatistics{
 
 	public void startType() {
 		intype = true;
-		if(indeclstmt){
+		if(indecl){
 			seekingTypename = true;
 		}
 	}
