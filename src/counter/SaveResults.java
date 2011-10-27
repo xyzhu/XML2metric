@@ -11,49 +11,9 @@ import counter.totalstatistics.*;
 
 
 public class SaveResults {
-	public int numFile;
-	public int numTotalLine;
-	public int numCommentLine;
-	public int numBlankLine;
-	public int numFunction;
-	public int numFunctionDecl;
-	public int numBlock;
-	public int numDeclstmt;
-	public int numDecl;
-	public int numExprstmt;
-	public int numExpr;
-	public int numIf;
-	public int numElse;
-	public int numWhile;
-	public int numFor;
-	public int numContinue;
-	public int numBreak;
-	public int numDo;
-	public int numSwitch;
-	public int numCase;
-	public int numReturn;
-	public int numCall;
-	public int numParamList;
-	public int numParam;
-	public int numArguList;
-	public int numArgument;
-	public int numAssignment;
-	public int numLocalFunctionCall = 0;
-	public int numLibFunctionCall = 0;
-	public int numZeroOpAssign = 0;
-	public int numZeroOpCallAssign = 0;
-	public int numConstAssign = 0;
-	public int numParamDecl = 0;
-	public int numDeclInFor = 0;
-	public int numDeclInStmt = 0;
-	public int numDeclStmtWithInit = 0;
-	public int numAssignInDeclStmt = 0;
-	//for C and C++, numLocalFunctionCall2 is used to get the number of local
-	//function calls that have a caller. For Java, numLocalFunctionCall2 is used
-	//to get the number of local method calls.
-	public int numLocalFunctionCall2 = 0;
-	public int numLocalOpOverloadCall = 0;
-	public int numLibOpOverloadCall = 0;
+	
+	public TotalStatistics totalStatistics = null;
+	FileStatistics fileStatistics = null;
 
 
 	public void writeResult(String fileName, String language,
@@ -61,8 +21,6 @@ public class SaveResults {
 			List<String> functionCallList, List<String> classList,
 			List<String> callerList, int numLocalCall1,List<String> operandTypeList,
 			Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
-		FileStatistics fileStatistics;
-		TotalStatistics totalStatistics = null;
 		if(language.equals("C")){
 			totalStatistics = new TotalStatistics_c();
 		}
@@ -150,7 +108,6 @@ public class SaveResults {
 
 	public void writeOperator(String fileName, 
 			List<FileStatistics> fileList) {
-		FileStatistics fileStatistics;
 		try{
 			//create file
 			FileWriter fw_operator = new FileWriter(fileName +"_operator.txt");

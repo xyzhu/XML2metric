@@ -71,7 +71,7 @@ public class TotalStatistics {
 		numLocalOpOverloadCall = getLocalOpOverloadCall(classList, operandTypeList);
 		numLocalFunctionCall = numLocalCall1 + numLocalFunctionCall2;
 		numLibOpOverloadCall = getLibOpOverloadCall();;
-		numLibFunctionCall = functionCallList.size() - numLocalFunctionCall + numLibOpOverloadCall;
+		numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
 		
 		return null;
 	}
@@ -205,4 +205,18 @@ public class TotalStatistics {
 	public int getLocalOpOverloadCall(List<String> classList,
 			List<String> operandTypeList) {	return 0;}
 				
+	public int getNumLabel(){return 0;}
+	public int getNumClass(){return 0;};
+	public int getNumConstructor(){return 0;}
+	public int getNumTry(){return 0;}
+	public int getNumCatch(){return 0;}
+	public int getNumThrow(){return 0;}
+	public int getNumSynchronized(){return 0;}
+	public int getNumStruct(){return 0;}
+	public int getNumGoto(){return 0;}
+	public int getNumClassdecl(){return 0;}
+	public int getNumConstructordecl(){return 0;}
+	public int getNumDestructordecl(){return 0;}
+	public int getNumDestructor(){return 0;}
+	public int getUnion(){return 0;}
 }

@@ -346,15 +346,14 @@ public class CountStatistics {
 		}
 		if(includeCallAssign==true&&numOperator==0){
 			currentFile.numZeroOpCallAssign += numassign;
-//			System.out.println("@@@@@@@@@@@@"+numassign);
 		}
 		if(isassign&&!includeCallAssign&&numOpOverloadCall>0&&numOperator==0){
 			currentFile.numZeroOpCallAssign += numassign;
-//			System.out.println("$$$$$$$$$$$$$"+numassign);
 			numOpOverloadCall = 0;
 		}
 		if(numOperator==0){
 			if(isConstAssign){
+				System.out.println("@@@@@@@@");
 				currentFile.numConstAssign += numassign;
 			}
 			else{
@@ -404,7 +403,7 @@ public class CountStatistics {
 
 
 	public void characterHandle(char[] text, int start, int length) {
-//		System.out.println(new String(text, start, length));
+		System.out.println(new String(text, start, length));
 		String str = new String(text, start, length);
 		if (collectChars) {
 			if (charbucket == null) {

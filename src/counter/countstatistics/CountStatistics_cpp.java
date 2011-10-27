@@ -75,7 +75,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		currentFile.setFileName(fileName);
 		unitlevel++;
 		filename = fileName;
-//		System.out.println(filename);
+		System.out.println(filename);
 	}
 
 	public void startStruct(){
@@ -186,7 +186,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		checkMacroAssign();
 		if(seekingOperandname&&numOperandname==1&&charbucket!=null){
 			operandname = charbucket.trim();
-			if(operandname.equals("cout")){
+			if(operandname.equals("cout")||operandname.equals("cerr")){
 				operandTypeList.add("cout");
 				currentFile.increaseNumOpOverloadCall();//temp
 			}

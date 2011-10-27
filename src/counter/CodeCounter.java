@@ -14,6 +14,7 @@ import counter.countstatistics.*;
 
 public class CodeCounter implements ContentHandler {
 
+	public SaveResults sr;
 	private String fileName;
 	private elementName eleName;
 	public CountStatistics countStat;
@@ -251,7 +252,7 @@ public class CodeCounter implements ContentHandler {
 
 	// Now that the document is done, we can print out the final results
 	public void endDocument() throws SAXException {
-		SaveResults sr = new SaveResults();
+		sr = new SaveResults();
 //		if(language.equals("C")){
 //			sr = new SaveResults_c();
 //		}

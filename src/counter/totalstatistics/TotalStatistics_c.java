@@ -17,8 +17,6 @@ public class TotalStatistics_c extends TotalStatistics{
 		StringBuilder total = new StringBuilder();
 		total.append("Struct: " + numStruct);
 		total.append("\n");
-		total.append("Do: " + numDo);
-		total.append("\n");
 		total.append("Goto: " + numGoto);
 		total.append("\n");
 		total.append("Label: " + numLabel);
@@ -58,4 +56,15 @@ public class TotalStatistics_c extends TotalStatistics{
 		return numLocalCall;
 	}
 
+	public int getNumStruct(){
+		return numStruct;
+	}
+	
+	public int getNumGoto(){
+		return numGoto;
+	}
+	
+	public int getNumLabel(){
+		return numLabel;
+	}
 }

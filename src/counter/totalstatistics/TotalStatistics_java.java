@@ -73,4 +73,23 @@ public class TotalStatistics_java extends TotalStatistics{
 		numThrow += fs.numThrow;
 	}
 
+	public int getNumClass(){
+		return numClass;
+	}
+	
+	public int getNumConstructor(){
+		return numConstructor;
+	}
+	
+	public int getNumTry(){
+		return numTry;
+	}
+	
+	public int getNumCatch(){
+		return numCatch;
+	}
+	
+	public int getNumThrow(){
+		return numThrow;
+	}
 }

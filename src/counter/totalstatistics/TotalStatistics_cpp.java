@@ -132,4 +132,38 @@ public class TotalStatistics_cpp extends TotalStatistics{
 		}
 		return numcall;
 	}
+	
+	public int getNumClass(){
+		return numClass;
+	}
+	public int getNumStruct(){
+		return numStruct;
+	}
+	public int getNumConstructordecl(){
+		return numConstructordecl;
+	}
+	public int getNumDestructordecl(){
+		return numDestructordecl;
+	}
+	public int getNumConstructor(){
+		return numConstructor;
+	}
+	public int getNumDestructor(){
+		return numDestructor;
+	}
+	public int getNumUnion(){
+		return numUnion;
+	}
+	public int getNumTry(){
+		return numTry;
+	}
+	public int getNumCatch(){
+		return numCatch;
+	}
+	public int getNumThrow(){
+		return numThrow;
+	}
+	public int getNumOpOverloadCall(){
+		return numOpOverloadCall;
+	}
 }
