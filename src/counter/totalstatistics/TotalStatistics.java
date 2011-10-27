@@ -49,7 +49,7 @@ public class TotalStatistics {
 	public int numLocalFunctionCall2 = 0;
 	public int numLocalOpOverloadCall = 0;
 	public int numLibOpOverloadCall = 0;
-	int numLocalCall1;
+	int numLocalFunctionCall1;
 	List<String> functionList;
 	List<String> functionCallList;
 	List<String> classList;
@@ -59,7 +59,7 @@ public class TotalStatistics {
 	public void initialize(int numLocalCall1, List<String> functionList, 
 			List<String> functionCallList, List<String> classList, List<String> operandTypeList,
 			List<String> callerList){
-		this.numLocalCall1 = numLocalCall1;
+		this.numLocalFunctionCall1 = numLocalCall1;
 		this.functionList = functionList;
 		this.functionCallList = functionCallList;
 		this.classList = classList;
@@ -77,16 +77,6 @@ public class TotalStatistics {
 		String samepart = getSameTotalStatisticsInfo();
 		String diffpart = getDiffTotalStatisticsInfo();
 		return samepart+diffpart;
-	}
-
-	public String getTotalStatisticsPart2() {
-		numLocalFunctionCall2 = getLocalFunctionCallNumber();
-		numLocalOpOverloadCall = getLocalOpOverloadCall();
-		numLocalFunctionCall = numLocalCall1 + numLocalFunctionCall2;
-		numLibOpOverloadCall = getLibOpOverloadCall();;
-		numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
-		
-		return null;
 	}
 
 	public void getSameTotalStatisticsPart1(List<FileStatistics> fsList){
@@ -240,6 +230,7 @@ public class TotalStatistics {
 	public int getNumDestructor(){return 0;}
 	public int getUnion(){return 0;}
 	public int getNumOpOverloadCall(){return 0;}
+	public void getTotalStatisticsPart2(){};
 
 
 	public void getDiffTotalStatisticsPart1(List<FileStatistics> fsList){};

@@ -64,6 +64,15 @@ public class TotalStatistics_cpp extends TotalStatistics{
 			addDiffFileStatistics(fs);
 		}
 	}
+	
+	public void getTotalStatisticsPart2() {
+		numLocalFunctionCall2 = getLocalFunctionCallNumber();
+		numLocalOpOverloadCall = getLocalOpOverloadCall();
+		numLocalFunctionCall = numLocalFunctionCall1 + numLocalFunctionCall2;
+		numLibOpOverloadCall = getLibOpOverloadCall();
+		numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
+	}
+	
 	public void addDiffFileStatistics(FileStatistics fileStatistics){
 		FileStatistics_cpp fs = (FileStatistics_cpp) fileStatistics;
 		numClass += fs.numClass;

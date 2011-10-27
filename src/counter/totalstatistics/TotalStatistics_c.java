@@ -37,6 +37,13 @@ public class TotalStatistics_c extends TotalStatistics{
 			addDiffFileStatistics(fs);
 		}
 	}
+	
+	public void getTotalStatisticsPart2() {
+		numLocalFunctionCall2 = getLocalFunctionCallNumber();
+		numLocalFunctionCall = numLocalFunctionCall1 + numLocalFunctionCall2;
+		numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
+	}
+	
 	public void addDiffFileStatistics(FileStatistics fileStatistics){
 		FileStatistics_c fs = (FileStatistics_c) fileStatistics;
 		numStruct += fs.numStruct;
