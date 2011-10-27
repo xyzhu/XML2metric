@@ -34,7 +34,8 @@ public class SaveResults {
 			System.err.println("Can not parse projects in this language");
 			System.exit(0);
 		}
-		String fileInfo;
+		totalStatistics.initialize(numLocalCall1, functionList, functionCallList, 
+				classList, operandTypeList, callerList);
 		try{
 			int index = fileName.indexOf(".xml");
 			String outFileName = fileName.substring(0, index);
@@ -45,23 +46,13 @@ public class SaveResults {
 			Iterator<FileStatistics> it = fileList.iterator();
 			if(savefilestat){
 				while(it.hasNext()){
-					totalStatistics.numFile++;
 					fileStatistics = it.next();
-					totalStatistics.getTotalStatistics(fileStatistics, numLocalCall1, functionList, 
-							functionCallList, classList, operandTypeList, callerList);
-					fileInfo = fileStatistics.getFileStatisticsInfo();
-					fileBuilder.append(fileInfo);
+					fileBuilder.append(fileStatistics.getFileStatisticsInfo());
 					fileBuilder.append("\n");
 				}
 			}
-			else{
-				while(it.hasNext()){
-					totalStatistics.numFile++;
-					fileStatistics = it.next();
-					totalStatistics.getTotalStatistics(fileStatistics, numLocalCall1, functionList, 
-					functionCallList, classList, operandTypeList, callerList);
-				}
-			}
+			totalStatistics.getTotalStatisticsPart1(fileList);
+			totalStatistics.getTotalStatisticsPart2();
 			String totalInfo = totalStatistics.getTotalStatisticsInfo();
 			writer.write(totalInfo);
 			writer.write(fileBuilder.toString());

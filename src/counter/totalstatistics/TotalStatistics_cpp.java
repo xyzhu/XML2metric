@@ -19,7 +19,6 @@ public class TotalStatistics_cpp extends TotalStatistics{
 	public int numThrow = 0;
 	public int numOpOverloadCall = 0;
 
-	@Override
 	public String getDiffTotalStatisticsInfo() {
 		StringBuilder total = new StringBuilder();
 		total.append("Class: " + numClass);
@@ -57,7 +56,15 @@ public class TotalStatistics_cpp extends TotalStatistics{
 	}
 
 
-	public void getDiffTotalStatistics(FileStatistics fileStatistics){
+	public void getDiffTotalStatisticsPart1(List<FileStatistics> fsList){
+		FileStatistics fs;
+		Iterator<FileStatistics> it = fsList.iterator();
+		while(it.hasNext()){
+			fs = it.next();
+			addDiffFileStatistics(fs);
+		}
+	}
+	public void addDiffFileStatistics(FileStatistics fileStatistics){
 		FileStatistics_cpp fs = (FileStatistics_cpp) fileStatistics;
 		numClass += fs.numClass;
 		numStruct += fs.numStruct;
@@ -72,9 +79,7 @@ public class TotalStatistics_cpp extends TotalStatistics{
 		numOpOverloadCall += fs.numOpOverloadCall;
 	}
 	
-	public int getLocalFunctionCallNumber(List<String> functionList,
-			List<String> functionCallList, List<String> classList, 
-			List<String> callerList) {
+	public int getLocalFunctionCallNumber() {
 		int numLocalCall = 0;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
@@ -119,8 +124,7 @@ public class TotalStatistics_cpp extends TotalStatistics{
 		return numOpOverloadCall - numLocalOpOverloadCall;
 	}
 
-	public int getLocalOpOverloadCall(List<String> classList,
-			List<String> operandTypeList) {	
+	public int getLocalOpOverloadCall() {	
 		int numcall = 0;
 		Iterator<String> it = operandTypeList.iterator();
 		String operandType;

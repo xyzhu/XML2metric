@@ -75,7 +75,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		currentFile.setFileName(fileName);
 		unitlevel++;
 		filename = fileName;
-		System.out.println(filename);
+//		System.out.println(filename);
 	}
 
 	public void startStruct(){

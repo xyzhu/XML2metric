@@ -402,7 +402,7 @@ public class CountStatistics {
 
 
 	public void characterHandle(char[] text, int start, int length) {
-		System.out.println(new String(text, start, length));
+//		System.out.println(new String(text, start, length));
 		String str = new String(text, start, length);
 		if (collectChars) {
 			if (charbucket == null) {

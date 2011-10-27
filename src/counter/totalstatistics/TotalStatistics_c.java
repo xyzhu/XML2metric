@@ -29,16 +29,22 @@ public class TotalStatistics_c extends TotalStatistics{
 		return total.toString();
 	}
 
-	public void getDiffTotalStatistics(FileStatistics fileStatistics){
+	public void getDiffTotalStatisticsPart1(List<FileStatistics> fsList){
+		FileStatistics fs;
+		Iterator<FileStatistics> it = fsList.iterator();
+		while(it.hasNext()){
+			fs = it.next();
+			addDiffFileStatistics(fs);
+		}
+	}
+	public void addDiffFileStatistics(FileStatistics fileStatistics){
 		FileStatistics_c fs = (FileStatistics_c) fileStatistics;
 		numStruct += fs.numStruct;
 		numGoto += fs.numGoto;
 		numLabel += fs.numLabel;
 	}
 	
-	public int getLocalFunctionCallNumber(List<String> functionList,
-			List<String> functionCallList, List<String> classList, 
-			List<String> callerList) {
+	public int getLocalFunctionCallNumber() {
 		int numLocalCall = 0;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
