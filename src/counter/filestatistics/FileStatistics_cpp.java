@@ -128,6 +128,9 @@ public class FileStatistics_cpp extends FileStatistics{
 	public int getUnion(){
 		return numUnion;
 	}
+	public int getNumOpOverloadCall(){
+		return numOpOverloadCall;
+	}
 	
 	@Override
 	public String getDiffFileStatisticsInfo() {

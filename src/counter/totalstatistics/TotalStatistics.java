@@ -219,4 +219,5 @@ public class TotalStatistics {
 	public int getNumDestructordecl(){return 0;}
 	public int getNumDestructor(){return 0;}
 	public int getUnion(){return 0;}
+	public int getNumOpOverloadCall(){return 0;}
 }
