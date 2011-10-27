@@ -353,7 +353,6 @@ public class CountStatistics {
 		}
 		if(numOperator==0){
 			if(isConstAssign){
-				System.out.println("@@@@@@@@");
 				currentFile.numConstAssign += numassign;
 			}
 			else{
