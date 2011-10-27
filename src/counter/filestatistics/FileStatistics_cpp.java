@@ -128,4 +128,34 @@ public class FileStatistics_cpp extends FileStatistics{
 	public int getUnion(){
 		return numUnion;
 	}
+	
+	@Override
+	public String getDiffFileStatisticsInfo() {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("Class: " + numClass);
+		sBuilder.append("\n");
+		sBuilder.append("Struct: " + numStruct);
+		sBuilder.append("\n");
+		sBuilder.append("Operator overload call: " + numOpOverloadCall);
+		sBuilder.append("\n");
+		sBuilder.append("Constructor declaration: " + numConstructordecl);
+		sBuilder.append("\n");
+		sBuilder.append("Destructor declaration: " + numDestructordecl);
+		sBuilder.append("\n");
+		sBuilder.append("Constructor: " + numConstructor);
+		sBuilder.append("\n");
+		sBuilder.append("Destructor: " + numDestructor);
+		sBuilder.append("\n");
+		sBuilder.append("Union: " + numUnion);
+		sBuilder.append("\n");
+		sBuilder.append("Try: " + numTry);
+		sBuilder.append("\n");
+		sBuilder.append("Catch: " + numCatch);
+		sBuilder.append("\n");
+		sBuilder.append("Throw: " + numThrow);
+		sBuilder.append("\n");
+		sBuilder.append("\n");
+		return sBuilder.toString();
+	}
+
 }

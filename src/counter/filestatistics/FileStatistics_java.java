@@ -76,4 +76,23 @@ public class FileStatistics_java extends FileStatistics{
 	public int getNumThrow(){
 		return numThrow;
 	}
+	
+	@Override
+	public String getDiffFileStatisticsInfo() {
+
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("Class: " + numClass);
+		sBuilder.append("\n");
+		sBuilder.append("Constructor: " + numConstructor);
+		sBuilder.append("\n");
+		sBuilder.append("Try: " + numTry);
+		sBuilder.append("\n");
+		sBuilder.append("Catch: " + numCatch);
+		sBuilder.append("\n");
+		sBuilder.append("Throw: " + numThrow);
+		sBuilder.append("\n");
+		sBuilder.append("\n");
+		return sBuilder.toString();
+	}
+
 }

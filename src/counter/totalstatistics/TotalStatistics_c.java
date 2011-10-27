@@ -1,4 +1,5 @@
-package counter.saveresults;
+package counter.totalstatistics;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -6,7 +7,7 @@ import java.util.Set;
 
 import counter.filestatistics.*;
 
-public class SaveResults_c extends SaveResults{
+public class TotalStatistics_c extends TotalStatistics{
 	public int numStruct = 0;
 	public int numGoto = 0;
 	public int numLabel = 0;
@@ -30,29 +31,13 @@ public class SaveResults_c extends SaveResults{
 		return total.toString();
 	}
 
-	@Override
-	public String getDiffFileStatisticsInfo(
-			FileStatistics fileStatistics) {
-
-		FileStatistics_c fs = (FileStatistics_c) fileStatistics;
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append("Struct: " + fs.numStruct);
-		sBuilder.append("\n");
-		sBuilder.append("Goto: " + fs.numGoto);
-		sBuilder.append("\n");
-		sBuilder.append("Label: " + fs.numLabel);
-		sBuilder.append("\n");
-		sBuilder.append("\n");
-		return sBuilder.toString();
-	}
-
 	public void getDiffTotalStatistics(FileStatistics fileStatistics){
 		FileStatistics_c fs = (FileStatistics_c) fileStatistics;
 		numStruct += fs.numStruct;
 		numGoto += fs.numGoto;
 		numLabel += fs.numLabel;
 	}
-
+	
 	public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
 			List<String> callerList) {
@@ -72,4 +57,5 @@ public class SaveResults_c extends SaveResults{
 		}
 		return numLocalCall;
 	}
+
 }

@@ -66,6 +66,93 @@ public class FileStatistics {
 	public void setFileName(String name) {
 		fileName = name;
 	}
+	
+	public String getFileStatisticsInfo(){
+		return getSameFileStatisticsInfo() + getDiffFileStatisticsInfo();
+		
+	}
+	
+	public String getSameFileStatisticsInfo() {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("*****  File Statistics  *****");
+		sBuilder.append("\n");
+		sBuilder.append("\n");
+		sBuilder.append("File name: [[[ " + fileName + " ]]]");
+		sBuilder.append("\n");
+		sBuilder.append("\n");
+		sBuilder.append("Total line: " + numTotalLine);
+		sBuilder.append("\n");
+		sBuilder.append("Comment line: " + numCommentLine);
+		sBuilder.append("\n");
+		sBuilder.append("Blank line: " + numBlankLine);
+		sBuilder.append("\n");
+		sBuilder.append("Function declaration: " + numFunctionDecl);
+		sBuilder.append("\n");
+		sBuilder.append("Function: " + numFunction);
+		sBuilder.append("\n");
+		sBuilder.append("Declaration statement: " + numDeclstmt);
+		sBuilder.append("\n");
+		sBuilder.append("Declaration:" + numDecl);
+		sBuilder.append("\n");
+		sBuilder.append("Blocks: " + numBlock);
+		sBuilder.append("\n");
+		sBuilder.append("Expressions: " + numExpr);
+		sBuilder.append("\n");
+		sBuilder.append("Expression statements: " + numExprstmt);
+		sBuilder.append("\n");
+		sBuilder.append("Call: " + numCall);
+		sBuilder.append("\n");
+		sBuilder.append("Continue: " + numContinue);
+		sBuilder.append("\n");
+		sBuilder.append("Break: " + numBreak);
+		sBuilder.append("\n");
+		sBuilder.append("Return: " +numReturn);
+		sBuilder.append("\n");
+		sBuilder.append("For: " + numFor);
+		sBuilder.append("\n");
+		sBuilder.append("If: " + numIf);
+		sBuilder.append("\n");
+		sBuilder.append("Else: " + numElse);
+		sBuilder.append("\n");
+		sBuilder.append("While: " + numWhile);
+		sBuilder.append("\n");
+		sBuilder.append("Do: " + numDo);
+		sBuilder.append("\n");
+		sBuilder.append("Switch: " + numSwitch);
+		sBuilder.append("\n");
+		sBuilder.append("Case: " + numCase);
+		sBuilder.append("\n");
+		sBuilder.append("Parameter list: " + numParamList);
+		sBuilder.append("\n");
+		sBuilder.append("Param: " + numParam);
+		sBuilder.append("\n");
+		sBuilder.append("Argument list: " + numArguList);
+		sBuilder.append("\n");
+		sBuilder.append("Argument: " + numArgu);
+		sBuilder.append("\n");
+		sBuilder.append("Assignment: " + numAssignment);
+		sBuilder.append("\n");
+		sBuilder.append("Zero operator assignment: " + numZeroOpAssign);
+		sBuilder.append("\n");
+		sBuilder.append("Zero operator call assignment: " + numZeroOpCallAssign);
+		sBuilder.append("\n");
+		sBuilder.append("Const assignment: " + numConstAssign);
+		sBuilder.append("\n");
+		sBuilder.append("Parameter declaration: " + numParamDecl);
+		sBuilder.append("\n");
+		sBuilder.append("Declaration in for: " + numDeclInFor);
+		sBuilder.append("\n");
+		sBuilder.append("Declaration in declaration statement: " + numDeclInStmt);
+		sBuilder.append("\n");
+		sBuilder.append("Declaration statement with initialization: " + numDeclStmtWithInit);
+		sBuilder.append("\n");
+		sBuilder.append("Assignment in declaration statement" + numAssignInDeclStmt);
+		sBuilder.append("\n");
+		return sBuilder.toString();
+
+	}
+
+	
 	public void increaseNumStruct(){};
 	public void increaseNumLabel(){};
 	public void increaseNumGoto(){};
@@ -95,5 +182,6 @@ public class FileStatistics {
 	public int getNumDestructor(){return 0;}
 	public int getUnion(){return 0;}
 	public void decreaseNumOpOverloadCall(){};
+	public String getDiffFileStatisticsInfo() {return null;};
 
 }

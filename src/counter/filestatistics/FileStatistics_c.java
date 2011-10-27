@@ -60,5 +60,20 @@ public class FileStatistics_c extends FileStatistics{
 	public int getNumLabel(){
 		return numLabel;
 	}
+	
+	@Override
+	public String getDiffFileStatisticsInfo() {
+
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("Struct: " + numStruct);
+		sBuilder.append("\n");
+		sBuilder.append("Goto: " + numGoto);
+		sBuilder.append("\n");
+		sBuilder.append("Label: " + numLabel);
+		sBuilder.append("\n");
+		sBuilder.append("\n");
+		return sBuilder.toString();
+	}
+
 
 }

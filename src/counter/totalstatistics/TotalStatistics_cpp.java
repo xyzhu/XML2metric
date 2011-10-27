@@ -1,4 +1,4 @@
-package counter.saveresults;
+package counter.totalstatistics;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Set;
 
 import counter.filestatistics.*;
 
-public class SaveResults_cpp extends SaveResults{
+public class TotalStatistics_cpp extends TotalStatistics{
 	public int numClass;
 	public int numStruct = 0;
 	public int numConstructordecl = 0;
@@ -56,37 +56,6 @@ public class SaveResults_cpp extends SaveResults{
 		return total.toString();
 	}
 
-	@Override
-	public String getDiffFileStatisticsInfo(
-			FileStatistics fileStatistics) {
-
-		FileStatistics_cpp fs = (FileStatistics_cpp) fileStatistics;
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append("Class: " + fs.numClass);
-		sBuilder.append("\n");
-		sBuilder.append("Struct: " + fs.numStruct);
-		sBuilder.append("\n");
-		sBuilder.append("Operator overload call: " + fs.numOpOverloadCall);
-		sBuilder.append("\n");
-		sBuilder.append("Constructor declaration: " + fs.numConstructordecl);
-		sBuilder.append("\n");
-		sBuilder.append("Destructor declaration: " + fs.numDestructordecl);
-		sBuilder.append("\n");
-		sBuilder.append("Constructor: " + fs.numConstructor);
-		sBuilder.append("\n");
-		sBuilder.append("Destructor: " + fs.numDestructor);
-		sBuilder.append("\n");
-		sBuilder.append("Union: " + fs.numUnion);
-		sBuilder.append("\n");
-		sBuilder.append("Try: " + fs.numTry);
-		sBuilder.append("\n");
-		sBuilder.append("Catch: " + fs.numCatch);
-		sBuilder.append("\n");
-		sBuilder.append("Throw: " + fs.numThrow);
-		sBuilder.append("\n");
-		sBuilder.append("\n");
-		return sBuilder.toString();
-	}
 
 	public void getDiffTotalStatistics(FileStatistics fileStatistics){
 		FileStatistics_cpp fs = (FileStatistics_cpp) fileStatistics;
@@ -102,7 +71,7 @@ public class SaveResults_cpp extends SaveResults{
 		numThrow += fs.numThrow;
 		numOpOverloadCall += fs.numOpOverloadCall;
 	}
-
+	
 	public int getLocalFunctionCallNumber(List<String> functionList,
 			List<String> functionCallList, List<String> classList, 
 			List<String> callerList) {
@@ -144,6 +113,7 @@ public class SaveResults_cpp extends SaveResults{
 		}
 		return numLocalCall;
 	}
+
 
 	public int getLibOpOverloadCall() {
 		return numOpOverloadCall - numLocalOpOverloadCall;
