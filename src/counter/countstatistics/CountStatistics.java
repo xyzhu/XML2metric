@@ -88,7 +88,6 @@ public class CountStatistics {
 	public List<String> functionList;
 	public List<String> functionCallList;
 
-	public int tempNumOpOverloadCall = 0;
 	public int numOpOverloadCall = 0;
 
 	public CountStatistics() {
@@ -415,13 +414,8 @@ public class CountStatistics {
 		if(unitlevel > 0){
 			getLine(text, start, length);
 			if(!incomment){
-				tempNumOpOverloadCall = 0;
 				getNumAssignment(str);
 				checkOperatorOverloadCall(str);
-				if(isassign==true&&!inargulist&&tempNumOpOverloadCall!=0){
-					numOperator -= tempNumOpOverloadCall;
-				}
-				tempNumOpOverloadCall = 0;
 			}
 		}
 	}
@@ -462,7 +456,6 @@ public class CountStatistics {
 			if(indecl==true||innodeclexpr==true){
 				increaseAssignment();
 				isassign = true;
-				tempNumOpOverloadCall = 0;
 				numassign++;
 				isConstAssign = true;
 				containOnlyWhiteSpace = true;
@@ -548,6 +541,7 @@ public class CountStatistics {
 			if(c!=' '&&c!='='){
 				containOnlyWhiteSpace = false;
 			}
+		}
 			//			if(str.contains("-=")||str.contains("+=")
 //			//					||str.contains("*=")||str.contains("/=")||str.contains("|=")
 //			if(str.contains("|=")
@@ -556,10 +550,6 @@ public class CountStatistics {
 			if(str.contains("<<")||str.contains(">>")||str.contains("==")){
 				numOp++;
 			}
-			if(incall&&str.contains("operator")){
-				numOp--;
-			}
-		}
 		return numOp;
 	}
 

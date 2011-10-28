@@ -75,7 +75,7 @@ public class CountStatistics_cpp extends CountStatistics{
 		currentFile.setFileName(fileName);
 		unitlevel++;
 		filename = fileName;
-//		System.out.println(filename);
+		//		System.out.println(filename);
 	}
 
 	public void startStruct(){
@@ -309,6 +309,10 @@ public class CountStatistics_cpp extends CountStatistics{
 		seekingTypename = false;
 	}
 	public void checkOperatorOverloadCall(String str) {
+		int tempNumOpOverloadCall = 0;
+		if(incall&&str.contains("operator")){
+			tempNumOpOverloadCall++;
+		}
 		String s = str.trim();
 		if(maybeOpOverloadCall){
 			if(s.equals("==")||s.equals("!=")||s.equals("+")
@@ -320,10 +324,10 @@ public class CountStatistics_cpp extends CountStatistics{
 				maybeOpOverloadCall = false;
 				tempNumOpOverloadCall++;
 				numOpOverloadCall++;
-//				System.out.println(operandname+"111111111"+ str);
+				//				System.out.println(operandname+"111111111"+ str);
 				if(isassign&&(s.equals("++")||s.equals("--"))){
 					tempNumOpOverloadCall--;
-//					System.out.println("2222222222");
+					//					System.out.println("2222222222");
 				}
 				if(s.equals("!=")){
 					tempNumOpOverloadCall--;
@@ -342,7 +346,7 @@ public class CountStatistics_cpp extends CountStatistics{
 					operandTypeList.remove(classobj.get(operandname));
 					tempNumOpOverloadCall--;
 					numOpOverloadCall--;
-//					System.out.println("333333333333");
+					//					System.out.println("333333333333");
 				}
 				maybeOpOverloadCall = false;
 				isMinusOverload = false;
@@ -352,11 +356,16 @@ public class CountStatistics_cpp extends CountStatistics{
 				currentFile.increaseNumOpOverloadCall();
 				tempNumOpOverloadCall++;
 				numOpOverloadCall++;
-//				System.out.println("4444444444");
+				//				System.out.println("4444444444");
 				operandTypeList.add(classobj.get(operandname));
 			}
 			else
 				maybeOpOverloadCall = false;
 		}
+		if(isassign==true&&!inargulist&&tempNumOpOverloadCall!=0){
+			numOperator -= tempNumOpOverloadCall;
+		}
+		tempNumOpOverloadCall = 0;
 	}
+
 }
