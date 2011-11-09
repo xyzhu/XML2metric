@@ -56,7 +56,7 @@ public class CountStatistics {
 	 * "->"is a pointer and '-' should not be taken
 	 * as a minus operator in an assignment
 	 */
-	public boolean ispointer = false;
+	public boolean maybepointer = false;
 	/*
 	 * isConstAssign is used to tell if the 
 	 * right part of an assignment is const.
@@ -100,7 +100,6 @@ public class CountStatistics {
 		collectChars = false;
 		isassign = false;
 		includeCallAssign = false;
-		ispointer = false;
 		fileList = new LinkedList<FileStatistics>();
 		seekingFunctionname = false;
 		seekingFunctioncallname = false;
@@ -401,7 +400,7 @@ public class CountStatistics {
 
 
 	public void characterHandle(char[] text, int start, int length) {
-//		System.out.println(new String(text, start, length));
+		System.out.println(new String(text, start, length));
 		String str = new String(text, start, length);
 		if (collectChars) {
 			if (charbucket == null) {
@@ -524,17 +523,19 @@ public class CountStatistics {
 					||c=='&'||c=='|'||c=='^'||c=='~'){//count bitwise operator
 				numOp++;
 			}
-			if(c=='>'&&ispointer ==true){
+			if(c=='>'&&maybepointer ==true){
 				numOp--;
 			}
 			if(c=='-'){
 				if(containOnlyWhiteSpace){
 					numOp--;
 				}
-				ispointer = true;
+				maybepointer = true;
 			}
-			else
-				ispointer = false;
+			else{
+				maybepointer = false;
+			}
+			
 			if((c=='*'||c=='&')&&containOnlyWhiteSpace){
 				numOp--;
 			}

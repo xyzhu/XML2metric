@@ -31,6 +31,9 @@ public class CountStatistics_cpp extends CountStatistics{
 
 	public boolean seekingMacroname = false;
 	public boolean seekingAssignname = false;
+	public boolean iscout = false;
+	public boolean iscoutop = false;
+	public boolean ispointer = false;
 	/*
 	 * containMacroAssign is used to tell if the right part
 	 *  of an assignment contains an macro
@@ -186,9 +189,10 @@ public class CountStatistics_cpp extends CountStatistics{
 		checkMacroAssign();
 		if(seekingOperandname&&numOperandname==1&&charbucket!=null){
 			operandname = charbucket.trim();
-			if(operandname.equals("cout")||operandname.equals("cerr")){
-				operandTypeList.add("cout");
-				currentFile.increaseNumOpOverloadCall();//temp
+			if(operandname.equals("cout")||operandname.equals("cerr")
+					||operandname.equals("cin")){
+				iscout = true;
+				iscoutop = false;
 			}
 			else if(classobj.keySet().contains(operandname)){
 				maybeOpOverloadCall = true;
@@ -262,6 +266,7 @@ public class CountStatistics_cpp extends CountStatistics{
 
 	public void stopSeekingOperator(){
 		maybeOpOverloadCall = false;
+		iscout = false;
 	}
 	/*
 	 *if seeking assignment name is true, the name got is 
@@ -310,10 +315,26 @@ public class CountStatistics_cpp extends CountStatistics{
 	}
 	public void checkOperatorOverloadCall(String str) {
 		int tempNumOpOverloadCall = 0;
-		if(incall&&str.contains("operator")){
+		String s = str.trim();
+		if(!ispointer&&iscout&&(s.equals("<")||s.equals(">"))){
+			if(!iscoutop){
+				iscoutop = true;
+			}
+			else{
+				currentFile.increaseNumOpOverloadCall();System.out.println("*****");
+				operandTypeList.add("cout");
+				iscoutop = false;
+			}
+		}
+		if(s.equals("-")){
+			ispointer = true;
+		}
+		else{
+			ispointer = false;
+		}
+		if(incall&&s.contains("operator")){
 			tempNumOpOverloadCall++;
 		}
-		String s = str.trim();
 		if(maybeOpOverloadCall){
 			if(s.equals("==")||s.equals("!=")||s.equals("+")
 					||s.equals("*")||s.equals("/")||s.equals("+=")
