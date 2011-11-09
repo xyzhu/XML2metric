@@ -321,7 +321,7 @@ public class CountStatistics_cpp extends CountStatistics{
 				iscoutop = true;
 			}
 			else{
-				currentFile.increaseNumOpOverloadCall();System.out.println("*****");
+				currentFile.increaseNumOpOverloadCall();
 				operandTypeList.add("cout");
 				iscoutop = false;
 			}
