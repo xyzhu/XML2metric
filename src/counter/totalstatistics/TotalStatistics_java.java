@@ -40,7 +40,7 @@ public class TotalStatistics_java extends TotalStatistics{
 	}
 	
 	public int getLocalFunctionCallNumber() {
-		int numCall = 0;
+		int numLocalCall = 0;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
 		while(it_method.hasNext()){
@@ -53,13 +53,23 @@ public class TotalStatistics_java extends TotalStatistics{
 		}
 		Iterator<String> it_caller = callerList.iterator();
 		String callername;
+		String callname;
+		Iterator<String> it_call = callerFunctionCallList.iterator();
 		while(it_caller.hasNext()){
 			callername = it_caller.next();
+			callname = it_call.next();
 			if (classSet.contains(callername)){
-				numCall++;
+				numLocalCall++;
+				if(isGetterSetterCall(callname))
+					numLocalGetterSetterCall++;
 			}
+			else{
+				if(isGetterSetterCall(callname))
+					numLibGetterSetterCall++;
+			}
+
 		}
-		return numCall;
+		return numLocalCall;
 	}
 	
 	public void getDiffTotalStatisticsPart1(List<FileStatistics> fsList){
@@ -75,6 +85,7 @@ public class TotalStatistics_java extends TotalStatistics{
 		numLocalFunctionCall2 = getLocalFunctionCallNumber();
 		numLocalFunctionCall = numLocalFunctionCall1 + numLocalFunctionCall2;
 		numLibFunctionCall = functionCallList.size() - numLocalFunctionCall;
+		numLocalGetterSetterCall += numLocalGetterSetterCall1;
 	}
 	
 	public void addDiffFileStatistics(FileStatistics fileStatistics){

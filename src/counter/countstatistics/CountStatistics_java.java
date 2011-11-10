@@ -20,16 +20,25 @@ public class CountStatistics_java extends CountStatistics{
 	public String typename;
 	public Map<String, String> classobj;
 	public List<String> callerList;
+	//callerFunctionCallList is used to save the 
+		//function call's name that has a caller
+		public List<String> callerFunctionCallList;
 	public boolean inname;
 	public boolean seekingCallername;
+	//hasCaller is used to tell if a method call in Java has a caller.
+	//if not, this method call must be a call to local defined mehtod.
 	public boolean hasCaller;
+	//the following three variable is used to save the number of local calls
+	//that have no caller.
 	public int numLocalCall;
+	public int numLocalGetterSetterCall;
 
 	public CountStatistics_java(Boolean saveop){
 		saveOperator = saveop;
 		classList = new LinkedList<String>();
 		classobj = new HashMap<String, String>();
 		callerList = new LinkedList<String>();
+		callerFunctionCallList = new LinkedList<String>();
 		javaVarType = new HashSet<String>();
 		javaVarType.add("byte");
 		javaVarType.add("short");
@@ -123,7 +132,6 @@ public class CountStatistics_java extends CountStatistics{
 					callerList.add(caller);
 				}
 			}
-			hasCaller = false;
 			seekingCallername = false;
 		}
 		inname = false;
@@ -165,5 +173,35 @@ public class CountStatistics_java extends CountStatistics{
 	}
 	public int getNumLocalCall(){
 		return numLocalCall;
+	}
+	
+	public int getNumLocalGetterSetterCall(){
+		return numLocalGetterSetterCall;
+	}
+
+	public void checkFunctionCall(String callName){
+		if(!hasCaller){
+			if(isGetterSetterCall(callName))
+				numLocalGetterSetterCall++;
+		}
+		else{
+			callerFunctionCallList.add(callName);
+		}
+		hasCaller = false;
+	}
+
+	public boolean isGetterSetterCall(String callname){
+		if(callname.startsWith("get")||callname.startsWith("_get")
+				||callname.startsWith("_get")||callname.startsWith("_set")
+				||callname.startsWith("Get")||callname.startsWith("_Get")
+				||callname.startsWith("_Get")||callname.startsWith("_Get")){
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public List<String> getCallerFunctionCallList(){
+		return callerFunctionCallList;
 	}
 }

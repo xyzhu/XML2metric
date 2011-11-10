@@ -53,6 +53,7 @@ public class TotalStatistics_c extends TotalStatistics{
 	
 	public int getLocalFunctionCallNumber() {
 		int numLocalCall = 0;
+		boolean isLocal = false;
 		Set<String> methodSet = new HashSet<String>();
 		Iterator<String> it_method = functionList.iterator();
 		while(it_method.hasNext()){
@@ -62,8 +63,18 @@ public class TotalStatistics_c extends TotalStatistics{
 		String callname;
 		while(it_call.hasNext()){
 			callname = it_call.next();
+			isLocal = false;
 			if (methodSet.contains(callname)){
 				numLocalCall++;
+				isLocal = true;
+			}
+			if(isGetterSetterCall(callname)){
+				if(isLocal){
+					numLocalGetterSetterCall++;
+				}
+				else{
+					numLibGetterSetterCall++;
+				}
 			}
 		}
 		return numLocalCall;

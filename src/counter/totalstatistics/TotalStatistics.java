@@ -55,16 +55,22 @@ public class TotalStatistics {
 	List<String> classList;
 	List<String> operandTypeList;
 	List<String> callerList;
+	List<String> callerFunctionCallList;
+	public int numLocalGetterSetterCall1 = 0;
+	public int numLocalGetterSetterCall = 0;
+	public int numLibGetterSetterCall = 0;
 	
-	public void initialize(int numLocalCall1, List<String> functionList, 
+	public void initialize(int numLocalCall1, int numLocalGetterSetterCall1, List<String> functionList, 
 			List<String> functionCallList, List<String> classList, List<String> operandTypeList,
-			List<String> callerList){
+			List<String> callerList, List<String> callerFunctionCallList){
 		this.numLocalFunctionCall1 = numLocalCall1;
+		this.numLocalGetterSetterCall1 = numLocalGetterSetterCall1;
 		this.functionList = functionList;
 		this.functionCallList = functionCallList;
 		this.classList = classList;
 		this.callerList = callerList;
 		this.operandTypeList = operandTypeList;
+		this.callerFunctionCallList = callerFunctionCallList;
 	}
 	
 	
@@ -190,6 +196,10 @@ public class TotalStatistics {
 		total.append("\n");
 		total.append("Library function call: " + numLibFunctionCall);
 		total.append("\n");
+		total.append("Local getter setter call: " + numLocalGetterSetterCall);
+		total.append("\n");
+		total.append("Library getter setter call: " + numLibGetterSetterCall);
+		total.append("\n");
 		total.append("Zero operator assignment: " + numZeroOpAssign);
 		total.append("\n");
 		total.append("Zero operator call assignment: " + numZeroOpCallAssign);
@@ -207,6 +217,17 @@ public class TotalStatistics {
 		total.append("Assignment in declaration statement: " + numAssignInDeclStmt);
 		total.append("\n");
 		return total.toString();
+	}
+	
+	public boolean isGetterSetterCall(String callname){
+		if(callname.startsWith("get")||callname.startsWith("set")
+				||callname.startsWith("_get")||callname.startsWith("_set")
+				||callname.startsWith("Get")||callname.startsWith("Set")
+				||callname.startsWith("_Get")||callname.startsWith("_Set")){
+			return true;
+		}
+		else
+			return false;
 	}
 
 	public String getDiffTotalStatisticsInfo(){return null;};

@@ -19,8 +19,9 @@ public class SaveResults {
 	public void writeResult(String fileName, String language,
 			List<FileStatistics> fileList, List<String> functionList,
 			List<String> functionCallList, List<String> classList,
-			List<String> callerList, int numLocalCall1,List<String> operandTypeList,
-			Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
+			List<String> callerList, int numLocalCall1, 
+			List<String> callerFunctionCallList, int numLocalGetterSetterCall1,
+			List<String> operandTypeList, Boolean saveFunction, Boolean saveOperator, Boolean savefilestat) {
 		if(language.equals("C")){
 			totalStatistics = new TotalStatistics_c();
 		}
@@ -34,8 +35,9 @@ public class SaveResults {
 			System.err.println("Can not parse projects in this language");
 			System.exit(0);
 		}
-		totalStatistics.initialize(numLocalCall1, functionList, functionCallList, 
-				classList, operandTypeList, callerList);
+		totalStatistics.initialize(numLocalCall1, numLocalGetterSetterCall1, 
+				functionList, functionCallList, classList, operandTypeList, 
+				callerList, callerFunctionCallList);
 		try{
 			int index = fileName.indexOf(".xml");
 			String outFileName = fileName.substring(0, index);
