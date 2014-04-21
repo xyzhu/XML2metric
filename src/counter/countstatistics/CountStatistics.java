@@ -171,7 +171,7 @@ public class CountStatistics {
 	public void increaseAssignment() {
 		currentFile.numAssignment++;
 	}
-	
+
 	public void decreaseAssignment() {
 		currentFile.numAssignment--;
 	}
@@ -405,7 +405,7 @@ public class CountStatistics {
 
 
 	public void characterHandle(char[] text, int start, int length) {
-//		System.out.println(new String(text, start, length));
+		//		System.out.println(new String(text, start, length));
 		String str = new String(text, start, length);
 		if (collectChars) {
 			if (charbucket == null) {
@@ -428,20 +428,19 @@ public class CountStatistics {
 	 * @param str
 	 */
 	public void getNumAssignment(String str) {
-		//						System.out.println(str);
+		//		System.out.println(str);
 		if(!isassign&&(str.equals("++")||str.equals("--"))){
 			increaseAssignment();
 			isassign = true;
 			numOpOverloadCall = 0;
 		}
-		if(str.contains("=")&&!str.contains("!=")
-				&&!str.contains("==")){
+		if(str.contains("=")&&!(str.contains("!="))&&!(str.contains("=="))&&!(str.contains("<="))&&!(str.contains(">'"))){
 			if(prestr==null){
 				setAssignment(str);
 			}
 			else{
 				int len = prestr.length();
-				if(prestr.charAt(len-1)!='>'&&prestr.charAt(len-1)!='<'){
+				if(prestr.charAt(len-1)!='>'&&prestr.charAt(len-1)!='<'&&prestr.charAt(len-1)!='='&&prestr.charAt(len-1)!='!'){
 					setAssignment(str);
 				}
 			}
@@ -518,15 +517,34 @@ public class CountStatistics {
 		else
 			return false;
 	}
+	private boolean operatorInString(String str)
+	{
+		if(str.contains("\"")){
+			return true;
+		}
+		return false;
+	}
 	private int getNumOperator(String str, String prestr) {
 		int l = str.length();
+		if(operatorInString(str)){
+			return 0;
+		}
 		int numOp = 0;
 		char c;
 		for(int i=0; i<l;i++){
 			c = str.charAt(i);
 			if(c=='+'||c=='-'||c=='*'||c=='/'
 					||c=='&'||c=='|'||c=='^'||c=='~'){//count bitwise operator
+				{
+					if(c=='&'&&prestr.equals("&"))
+						break;
+					numOp++;
+				}
+			}
+			if(c=='!'||c=='<'||c=='>')
+			{
 				numOp++;
+				break;
 			}
 			if(c=='>'&&maybepointer ==true){
 				numOp--;
@@ -540,7 +558,7 @@ public class CountStatistics {
 			else{
 				maybepointer = false;
 			}
-			
+
 			if((c=='*'||c=='&')&&containOnlyWhiteSpace){
 				numOp--;
 			}
@@ -548,14 +566,14 @@ public class CountStatistics {
 				containOnlyWhiteSpace = false;
 			}
 		}
-			//			if(str.contains("-=")||str.contains("+=")
-//			//					||str.contains("*=")||str.contains("/=")||str.contains("|=")
-//			if(str.contains("|=")
-//					||str.contains("&=")||str.contains("^=")||str.contains(">>")
-//					||str.contains("<<")||str.contains("==")){
-			if(str.contains("<<")||str.contains(">>")||str.contains("==")){
-				numOp++;
-			}
+		//			if(str.contains("-=")||str.contains("+=")
+		//			//					||str.contains("*=")||str.contains("/=")||str.contains("|=")
+		//			if(str.contains("|=")
+		//					||str.contains("&=")||str.contains("^=")||str.contains(">>")
+		//					||str.contains("<<")||str.contains("==")){
+		if(str.contains("<<")||str.contains(">>")||str.contains("==")){
+			numOp++;
+		}
 		return numOp;
 	}
 
