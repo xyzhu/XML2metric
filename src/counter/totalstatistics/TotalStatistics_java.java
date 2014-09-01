@@ -15,6 +15,7 @@ public class TotalStatistics_java extends TotalStatistics{
 	public int numTry = 0;
 	public int numCatch = 0;
 	public int numThrow = 0;
+	public int numSynchronized = 0;
 
 
 	@Override
@@ -30,6 +31,8 @@ public class TotalStatistics_java extends TotalStatistics{
 		total.append("Catch: " + numCatch);
 		total.append("\n");
 		total.append("Throw: " + numThrow);
+		total.append("\n");
+		total.append("Synchronized: " + numSynchronized);
 		total.append("\n");
 		total.append("\n");
 		total.append("-------------------------");
@@ -95,6 +98,7 @@ public class TotalStatistics_java extends TotalStatistics{
 		numTry += fs.numTry;
 		numCatch += fs.numCatch;
 		numThrow += fs.numThrow;
+		numSynchronized += fs.numSynchronized;
 	}
 
 	public int getNumClass(){
@@ -115,5 +119,8 @@ public class TotalStatistics_java extends TotalStatistics{
 	
 	public int getNumThrow(){
 		return numThrow;
+	}
+	public int getNumSynchronized(){
+			return numSynchronized;
 	}
 }

@@ -10,6 +10,7 @@ public class FileStatistics_java extends FileStatistics{
 	public int numTry;
 	public int numCatch;
 	public int numThrow;
+	public int numSynchronized;
 	
 	public FileStatistics_java(){
 		numTotalLine = 0;
@@ -44,6 +45,7 @@ public class FileStatistics_java extends FileStatistics{
 		numTry = 0;
 		numCatch = 0;
 		numThrow = 0;
+		numSynchronized = 0;
 	}
 	
 	public void increaseNumClass(){
@@ -60,6 +62,9 @@ public class FileStatistics_java extends FileStatistics{
 	}
 	public void increaseNumThrow(){
 		numThrow++;
+	}
+	public void increaseNumSynchronized(){
+		numSynchronized++;
 	}
 	public int getNumClass(){
 		return numClass;
@@ -90,6 +95,8 @@ public class FileStatistics_java extends FileStatistics{
 		sBuilder.append("Catch: " + numCatch);
 		sBuilder.append("\n");
 		sBuilder.append("Throw: " + numThrow);
+		sBuilder.append("\n");
+		sBuilder.append("Synchronized " + numSynchronized);
 		sBuilder.append("\n");
 		sBuilder.append("\n");
 		return sBuilder.toString();

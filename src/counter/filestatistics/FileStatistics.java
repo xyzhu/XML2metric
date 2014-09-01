@@ -166,6 +166,8 @@ public class FileStatistics {
 	public void increaseNumThrow(){};
 	public void increaseNumMacro(){};
 	public void increaseNumUnion(){};
+	public void increaseNumDirective(){};
+	public void increaseNumSynchronized(){};
 	public void increaseNumOpOverloadCall(){};//temp
 	public int getNumLabel(){return 0;}
 	public int getNumClass(){return 0;};
@@ -183,6 +185,7 @@ public class FileStatistics {
 	public int getUnion(){return 0;}
 	public int getNumOpOverloadCall(){return 0;}
 	public void decreaseNumOpOverloadCall(){};
-	public String getDiffFileStatisticsInfo() {return null;};
+	public String getDiffFileStatisticsInfo() {return null;}
+
 
 }

@@ -11,7 +11,7 @@ enum elementName{unitEle, functionEle, function_declEle,
 	tryEle, catchEle,  throwEle, class_declEle, 
 	constructor_declEle, destructor_declEle, destructorEle, 
 	unionEle, packageEle, synchronizedEle, gotoEle, 
-	cppdefineEle, defaultEle};
+	cppdefineEle, directiveEle, defaultEle};
 
     public class QualifiedName {
 
@@ -61,6 +61,7 @@ enum elementName{unitEle, functionEle, function_declEle,
             collection.add("sysnchronized");
             collection.add("goto");
             collection.add("cppdefine");
+            collection.add("directive");
             collection.add("default");
             
             return collection;

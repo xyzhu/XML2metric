@@ -594,6 +594,7 @@ public class CountStatistics {
 	public void startSynchronized(){};
 	public void startUnit(String f){};
 	public void startCppdefine(){};
+	public void startDirective(){};
 	public void startName(){};
 	public void endName(){};
 	public List<String> getClassList(){

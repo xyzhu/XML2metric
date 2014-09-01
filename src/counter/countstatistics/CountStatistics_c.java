@@ -60,6 +60,10 @@ public class CountStatistics_c extends CountStatistics{
 		containMacroDefinition = true;
 	}
 	
+	public void startDirective(){
+		currentFile.increaseNumDirective();
+	}
+	
 	public void startName() {
 		if(seekingFunctionname||seekingFunctioncallname) {
 			collectChars = true;

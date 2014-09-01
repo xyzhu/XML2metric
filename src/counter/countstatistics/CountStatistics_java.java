@@ -14,6 +14,7 @@ public class CountStatistics_java extends CountStatistics{
 	public boolean seekingClassname = false;
 	public boolean seekingTypename = false;
 	public boolean seekingObjname = false;
+	public boolean seekingSynchronized = false;
 	public List<String> classList;
 	public boolean isobjdecl;
 	public Set<String> javaVarType;
@@ -21,8 +22,8 @@ public class CountStatistics_java extends CountStatistics{
 	public Map<String, String> classobj;
 	public List<String> callerList;
 	//callerFunctionCallList is used to save the 
-		//function call's name that has a caller
-		public List<String> callerFunctionCallList;
+	//function call's name that has a caller
+	public List<String> callerFunctionCallList;
 	public boolean inname;
 	public boolean seekingCallername;
 	//hasCaller is used to tell if a method call in Java has a caller.
@@ -73,6 +74,13 @@ public class CountStatistics_java extends CountStatistics{
 
 	public void startConstructor(){
 		currentFile.increaseNumConstructor();
+		seekingSynchronized = true;
+	}
+
+	public void startFunction() {
+		currentFile.numFunction++;
+		seekingFunctionname = true;
+		seekingSynchronized = true;
 	}
 
 	public void startTry(){
@@ -96,7 +104,7 @@ public class CountStatistics_java extends CountStatistics{
 
 	public void startName() {
 		if(seekingFunctionname||seekingFunctioncallname
-				||seekingClassname||seekingTypename||seekingObjname) {
+				||seekingClassname||seekingTypename||seekingObjname||seekingSynchronized) {
 			collectChars = true;
 			charbucket = null;
 		}
@@ -133,6 +141,12 @@ public class CountStatistics_java extends CountStatistics{
 				}
 			}
 			seekingCallername = false;
+		}
+		if(seekingSynchronized){
+			if(charbucket!=null&&charbucket.trim().equals("synchronized")){
+				currentFile.increaseNumSynchronized();
+				seekingSynchronized = false;
+			}
 		}
 		inname = false;
 	}
@@ -174,7 +188,7 @@ public class CountStatistics_java extends CountStatistics{
 	public int getNumLocalCall(){
 		return numLocalCall;
 	}
-	
+
 	public int getNumLocalGetterSetterCall(){
 		return numLocalGetterSetterCall;
 	}
@@ -200,7 +214,7 @@ public class CountStatistics_java extends CountStatistics{
 		else
 			return false;
 	}
-	
+
 	public List<String> getCallerFunctionCallList(){
 		return callerFunctionCallList;
 	}
