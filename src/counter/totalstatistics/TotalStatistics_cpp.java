@@ -14,6 +14,7 @@ public class TotalStatistics_cpp extends TotalStatistics{
 	public int numConstructor = 0;
 	public int numDestructor = 0;
 	public int numUnion = 0;
+	public int numDirective = 0;
 	public int numTry = 0;
 	public int numCatch = 0;
 	public int numThrow = 0;
@@ -40,6 +41,8 @@ public class TotalStatistics_cpp extends TotalStatistics{
 		total.append("Destructor: " + numDestructor);
 		total.append("\n");
 		total.append("Union: " + numUnion);
+		total.append("\n");
+		total.append("Directive: " + numDirective);
 		total.append("\n");
 		total.append("Try: " + numTry);
 		total.append("\n");
@@ -82,6 +85,7 @@ public class TotalStatistics_cpp extends TotalStatistics{
 		numConstructor += fs.numConstructor;
 		numDestructor += fs.numDestructor;
 		numUnion += fs.numUnion;
+		numDirective += fs.numDirective;
 		numTry += fs.numTry;
 		numCatch += fs.numCatch;
 		numThrow += fs.numThrow;
@@ -177,6 +181,9 @@ public class TotalStatistics_cpp extends TotalStatistics{
 	}
 	public int getNumUnion(){
 		return numUnion;
+	}
+	public int getNumDirective(){
+		return numDirective;
 	}
 	public int getNumTry(){
 		return numTry;

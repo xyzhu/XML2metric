@@ -60,6 +60,9 @@ public class CodeCounter implements ContentHandler {
 		if(qualifiedName.equals("cpp:define")){
 			qualifiedName = "cppdefine";
 		}
+		if(qualifiedName.equals("cpp:directive")){
+			qualifiedName = "directive";
+		}
 		eleName = QualifiedName.getElementName(qualifiedName);
 		switch (eleName) {
 
@@ -183,6 +186,8 @@ public class CodeCounter implements ContentHandler {
 		case cppdefineEle:
 			countStat.startCppdefine();
 			break;
+		case directiveEle:
+			countStat.startDirective();
 		default:
 			break;
 		}
