@@ -8,6 +8,7 @@ public class FileStatistics_c extends FileStatistics{
 	public int numStruct;
 	public int numLabel;
 	public int numGoto;
+	public int numDirective;
 	
 	public FileStatistics_c(){
 		numTotalLine = 0;
@@ -48,6 +49,9 @@ public class FileStatistics_c extends FileStatistics{
 	public void increaseNumGoto(){
 		numGoto++;
 	}
+	public void increaseNumDirective(){
+		numDirective++;
+	}
 	public void increaseNumLabel(){
 		numLabel++;
 	}
@@ -68,6 +72,8 @@ public class FileStatistics_c extends FileStatistics{
 		sBuilder.append("Struct: " + numStruct);
 		sBuilder.append("\n");
 		sBuilder.append("Goto: " + numGoto);
+		sBuilder.append("\n");
+		sBuilder.append("Directive: " + numDirective);
 		sBuilder.append("\n");
 		sBuilder.append("Label: " + numLabel);
 		sBuilder.append("\n");

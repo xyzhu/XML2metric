@@ -10,6 +10,7 @@ import counter.filestatistics.*;
 public class TotalStatistics_c extends TotalStatistics{
 	public int numStruct = 0;
 	public int numGoto = 0;
+	public int numDirective = 0;
 	public int numLabel = 0;
 
 	@Override
@@ -18,6 +19,8 @@ public class TotalStatistics_c extends TotalStatistics{
 		total.append("Struct: " + numStruct);
 		total.append("\n");
 		total.append("Goto: " + numGoto);
+		total.append("\n");
+		total.append("Directive: " + numDirective);
 		total.append("\n");
 		total.append("Label: " + numLabel);
 		total.append("\n");
@@ -48,6 +51,7 @@ public class TotalStatistics_c extends TotalStatistics{
 		FileStatistics_c fs = (FileStatistics_c) fileStatistics;
 		numStruct += fs.numStruct;
 		numGoto += fs.numGoto;
+		numDirective += fs.numDirective;
 		numLabel += fs.numLabel;
 	}
 	
@@ -86,6 +90,10 @@ public class TotalStatistics_c extends TotalStatistics{
 	
 	public int getNumGoto(){
 		return numGoto;
+	}
+	
+	public int getNumDirective(){
+		return numDirective;
 	}
 	
 	public int getNumLabel(){

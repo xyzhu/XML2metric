@@ -16,6 +16,7 @@ public class FileStatistics_cpp extends FileStatistics{
 	public int numDestructordecl;
 	public int numDestructor;
 	public int numUnion;
+	public int numDirective;
 	public int numOpOverloadCall;
 	
 	public FileStatistics_cpp(){
@@ -57,6 +58,7 @@ public class FileStatistics_cpp extends FileStatistics{
 		numDestructordecl = 0;
 		numDestructor = 0;
 		numUnion = 0;
+		numDirective = 0;
 	}
 	
 	public void increaseNumStruct(){
@@ -88,6 +90,9 @@ public class FileStatistics_cpp extends FileStatistics{
 	}
 	public void increaseNumUnion(){
 		numUnion++;
+	}
+	public void increaseNumDirective(){
+		numDirective++;
 	}
 	public void increaseNumOpOverloadCall(){//temp
 		numOpOverloadCall++;
@@ -150,6 +155,8 @@ public class FileStatistics_cpp extends FileStatistics{
 		sBuilder.append("Destructor: " + numDestructor);
 		sBuilder.append("\n");
 		sBuilder.append("Union: " + numUnion);
+		sBuilder.append("\n");
+		sBuilder.append("Directive: " + numDirective);
 		sBuilder.append("\n");
 		sBuilder.append("Try: " + numTry);
 		sBuilder.append("\n");

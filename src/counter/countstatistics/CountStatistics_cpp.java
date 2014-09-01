@@ -125,6 +125,9 @@ public class CountStatistics_cpp extends CountStatistics{
 	public void startUnion(){
 		currentFile.increaseNumUnion();
 	}
+	public void startDirective(){
+		currentFile.increaseNumDirective();
+	}
 	/*as long as there is a macro definition, we will
 	 * start seeking the name of the macro, and set
 	 * the containMacroDefinition to true.
